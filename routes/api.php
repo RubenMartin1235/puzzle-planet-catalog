@@ -2,7 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Api\PlanetController as ApiPlanetController;
+use App\Http\Controllers\Api\BlockController as ApiBlockController;
+use App\Http\Controllers\Api\CommentController as ApiCommentController;
+use App\Http\Controllers\Api\RatingController as ApiRatingController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,3 +20,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::resource('planets', ApiPlanetController::class);
+Route::resource('blocks', ApiBlockController::class);
+Route::resource('comments', ApiCommentController::class);
+Route::resource('ratings', ApiRatingController::class);
+
