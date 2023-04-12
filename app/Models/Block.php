@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Block extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'color',
+    ];
+
+    public function planets(){
+        return $this->belongsToMany(Planet::class);
+    }
 }
