@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name',24);
             $table->foreignId('user_id');
-            $table->string('bio',64);
+            $table->string('bio',128);
             $table->text('description');
             $table->timestamps();
         });

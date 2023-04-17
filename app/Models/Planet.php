@@ -27,6 +27,6 @@ class Planet extends Model
     }
 
     public function blocks(){
-        return $this->belongsToMany(Block::class);
+        return $this->belongsToMany(Block::class, 'planet_block');
     }
 }

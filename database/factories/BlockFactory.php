@@ -17,7 +17,10 @@ class BlockFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->name(),
+            'color' => '#787878',
+            'created_at'=>now(),
+            'updated_at'=>now(),
         ];
     }
 }

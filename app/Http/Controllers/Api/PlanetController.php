@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Planet;
 
 class PlanetController extends Controller
 {
@@ -28,7 +29,13 @@ class PlanetController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $planet = Planet::factory()->create([
+            'name' => 'Lastar',
+            'user_id' => $request->user()->id,
+            'bio' => "The planet of Lastar is full of light, and the light destroys all shadows.",
+            'description' => fake()->text(32)
+        ]);
+        $planet->save();
     }
 
     /**
@@ -36,7 +43,7 @@ class PlanetController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return Planet::where('id', $id)->get();
     }
 
     /**

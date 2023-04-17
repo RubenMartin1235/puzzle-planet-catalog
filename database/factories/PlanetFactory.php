@@ -17,7 +17,11 @@ class PlanetFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->name(),
+            'bio' => fake()->text(64),
+            'description' => fake()->text(256),
+            'created_at'=>now(),
+            'updated_at'=>now(),
         ];
     }
 }

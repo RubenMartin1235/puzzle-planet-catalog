@@ -18,6 +18,8 @@ class RoleFactory extends Factory
     {
         return [
             'name' => fake()->name(),
+            'created_at'=>now(),
+            'updated_at'=>now(),
         ];
     }
 }
