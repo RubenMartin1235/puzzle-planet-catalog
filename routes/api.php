@@ -17,12 +17,13 @@ use App\Http\Controllers\Api\RatingController as ApiRatingController;
 |
 */
 
-Route::middleware(['auth:api'])->get('/user', function (Request $request) {
+Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('planets', ApiPlanetController::class);
-Route::resource('blocks', ApiBlockController::class);
-Route::resource('comments', ApiCommentController::class);
-Route::resource('ratings', ApiRatingController::class);
+
+Route::apiResource('planets', ApiPlanetController::class)->middleware('auth:sanctum');
+Route::apiResource('blocks', ApiBlockController::class)->middleware('auth:sanctum');
+Route::apiResource('comments', ApiCommentController::class)->middleware('auth:sanctum');
+Route::apiResource('ratings', ApiRatingController::class)->middleware('auth:sanctum');
 

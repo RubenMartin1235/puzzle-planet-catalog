@@ -43,7 +43,17 @@ class PlanetController extends Controller
      */
     public function show(string $id)
     {
-        return Planet::where('id', $id)->get();
+        $planet = Planet::where('id', $id)->get();
+        if (!$planet) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Planet with id ' . $id . ' not found.'
+            ], 404);
+        }
+        return response()->json([
+            'success' => true,
+            'data' => $planet->toArray()
+        ], 200);
     }
 
     /**
@@ -67,6 +77,6 @@ class PlanetController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Planet::where('id', $id)->delete();
     }
 }
