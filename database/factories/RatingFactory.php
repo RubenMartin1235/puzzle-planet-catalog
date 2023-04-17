@@ -17,7 +17,9 @@ class RatingFactory extends Factory
     public function definition(): array
     {
         return [
-            'score' => 5
+            'score' => 5,
+            'created_at'=>now(),
+            'updated_at'=>now(),
         ];
     }
 }

@@ -59,5 +59,15 @@ class UserSeeder extends Seeder
             'updated_at'=>now(),
         ]);
         $user->roles()->attach($role_user);
+
+        $user = User::factory()->create([
+            'name'=>'Koishie Berigoo',
+            'email'=>'k.berigoo@puzzplan.com',
+            'password'=>Hash::make('tantanpou0000'),
+            'remember_token'=>Str::random(10),
+            'created_at'=>now(),
+            'updated_at'=>now(),
+        ]);
+        $user->roles()->attach($role_user);
     }
 }

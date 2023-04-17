@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             BlockSeeder::class,
             PlanetSeeder::class,
+            CommentSeeder::class,
+            RatingSeeder::class,
         ]);
     }
 }

@@ -17,7 +17,9 @@ class CommentFactory extends Factory
     public function definition(): array
     {
         return [
-            'message' => fake()->text(32)
+            'message' => fake()->text(32),
+            'created_at'=>now(),
+            'updated_at'=>now(),
         ];
     }
 }
