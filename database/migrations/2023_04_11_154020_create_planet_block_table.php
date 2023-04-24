@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('planet_block', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('planet_id');
-            $table->foreignId('block_id');
+            $table->foreignId('planet_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('block_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer('rate');
             $table->timestamps();
         });

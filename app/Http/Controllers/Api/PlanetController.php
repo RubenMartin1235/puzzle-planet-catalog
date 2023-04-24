@@ -13,7 +13,8 @@ class PlanetController extends Controller
      */
     public function index()
     {
-        //
+        $planets = Planet::all();
+        return response()->json($planets);
     }
 
     /**
