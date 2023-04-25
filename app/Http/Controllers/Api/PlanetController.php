@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Models\Planet;
 
 class PlanetController extends Controller
@@ -30,13 +32,23 @@ class PlanetController extends Controller
      */
     public function store(Request $request)
     {
-        $planet = Planet::factory()->create([
-            'name' => 'Lastar',
-            'user_id' => $request->user()->id,
-            'bio' => "The planet of Lastar is full of light, and the light destroys all shadows.",
-            'description' => fake()->text(32)
+        $author = Auth::user();
+        if (Auth::user()->hasAnyRole(['admin','loader']) && isset($request->user_id)) {
+            $author = User::find($request->user_id);
+        }
+        $validated = $request->validate([
+            'name' => 'required|string|max:24',
+            'bio' => 'required|string',
+            'description' => 'required|string',
         ]);
+        $validated = $request->merge(['user_id' => $author->id]);
+        $planet = Planet::factory()->create($validated->toArray());
         $planet->save();
+
+        return response()->json([
+            'status' => 1,
+            'msg' => 'Successfully created planet!'
+        ]);
     }
 
     /**
@@ -58,6 +70,15 @@ class PlanetController extends Controller
     }
 
     /**
+     * Display a listing of the resource by user
+     */
+    public function showByUser(Request $request, $user_id)
+    {
+        $planets = Planet::where('user_id', $user_id);
+        return response()->json($planets);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
@@ -70,14 +91,71 @@ class PlanetController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $planet = Planet::find($id);
+        if (!isset($planet->id)) {
+            return response()->json([
+                "status" => 0,
+                "msg" => "This planet does not exist!",
+            ],404);
+        }
+
+        $author;
+        if ($request->user()->hasAnyRole(['admin','loader'])) {
+            if (isset($request->user_id)) {
+                $author = User::find($request->user_id);
+            } else {
+                $author = User::find($planet->user_id);
+            }
+        } else {
+            if ($planet->user_id <> $request->user()->id) {
+                return response()->json([
+                    "status" => 0,
+                    "msg" => "You do not have permission to modify this planet!",
+                ],404);
+            }
+            $author = Auth::user();
+        }
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:24',
+            'bio' => 'required|string',
+            'description' => 'required|string',
+        ]);
+        $validated = $request->merge(['user_id' => $author->id]);
+        $planet->fill($validated->toArray());
+        $planet->save();
+
+        return response()->json([
+            'status' => 1,
+            'msg' => 'Successfully updated planet info!',
+        ]);
     }
+
+
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
-        Planet::where('id', $id)->delete();
+        $planet = Planet::find($id);
+        if (!$planet) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Planet with id ' . $id . ' not found.'
+            ], 404);
+        }
+        if ($request->user()->hasAnyRole(['admin','loader']) || $planet->user_id == $request->user()->id) {
+            $planet->delete();
+            return response()->json([
+                'status' => 1,
+                'msg' => 'Successfully deleted planet.',
+            ]);
+        }
+        return response()->json([
+            "status" => 0,
+            "msg" => "You do not have permission to modify this planet!",
+        ],404);
     }
 }

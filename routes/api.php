@@ -20,35 +20,35 @@ use App\Http\Controllers\Api\RatingController as ApiRatingController;
 
 
 
+// USERS
 Route::post('register', [ApiUserController::class, 'register']);
 Route::post('login', [ApiUserController::class, 'login']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('profile', [ApiUserController::class, 'profile']);
-    Route::get('logout', [ApiUserController::class, 'logout']);
     Route::put('profile/update', [ApiUserController::class, 'profileUpdate']);
     Route::delete('profile/delete', [ApiUserController::class, 'profileDelete']);
+    Route::get('logout', [ApiUserController::class, 'logout']);
 
     Route::get('users/{user}', [ApiUserController::class, 'show']);
 });
+
 Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
     Route::post('users', [ApiUserController::class, 'store']);
     Route::put('users/{user}', [ApiUserController::class, 'update']);
     Route::delete('users/{user}', [ApiUserController::class, 'destroy']);
 });
-Route::get('users/{user}', [ApiUserController::class, 'show']);
-/*
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
-});
-*/
 
-Route::get('planets', [ApiPlanetController::class, 'index']);
+
+// PLANETS
 Route::get('planets/{planet}', [ApiPlanetController::class, 'show']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('planets', [ApiPlanetController::class, 'index']);
     Route::post('planets', [ApiPlanetController::class, 'store']);
     Route::put('planets/{planet}', [ApiPlanetController::class, 'update']);
     Route::delete('planets/{planet}', [ApiPlanetController::class, 'destroy']);
+
+    Route::get('users/{user}/planets', [ApiPlanetController::class, 'showByUser']);
 });
 //Route::apiResource('planets', ApiPlanetController::class)->middleware('auth:sanctum');
 Route::apiResource('blocks', ApiBlockController::class)->middleware('auth:sanctum');
