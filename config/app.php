@@ -216,6 +216,12 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
+        'User' => App\Models\User::class,
+        'Role' => App\Models\Role::class,
+        'Planet' => App\Models\Planet::class,
+        'Block' => App\Models\Block::class,
+        'Comment' => App\Models\Comment::class,
+        'Rating' => App\Models\Rating::class,
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 

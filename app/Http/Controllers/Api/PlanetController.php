@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Planet;
+use App\Models\Block;
 
 class PlanetController extends Controller
 {
@@ -101,9 +102,12 @@ class PlanetController extends Controller
 
         $author;
         if ($request->user()->hasAnyRole(['admin','loader'])) {
+            // if json field "user_id" in request body exists...
             if (isset($request->user_id)) {
+                // the planet's new author will the User with id requested by admin (json field "user_id").
                 $author = User::find($request->user_id);
             } else {
+                // the planet's author will not change.
                 $author = User::find($planet->user_id);
             }
         } else {
@@ -117,13 +121,31 @@ class PlanetController extends Controller
         }
 
         $validated = $request->validate([
-            'name' => 'required|string|max:24',
-            'bio' => 'required|string',
-            'description' => 'required|string',
+            'name' => 'string|max:24|min:2',
+            'bio' => 'string',
+            'description' => 'string',
         ]);
         $validated = $request->merge(['user_id' => $author->id]);
         $planet->fill($validated->toArray());
         $planet->save();
+
+        $blocks = $request->blocks;
+        if (isset($blocks)) {
+            foreach ($blocks as $block_type => $rate) {
+                $block = Block::where('name', $block_type)->first();
+                if ($rate <= 0) {
+                    $planet->detach($block);
+                } else {
+                    $planet->blocks()->attach($block, ['rate' => $rate]);
+                }
+            }
+            return response()->json([
+                'status' => 1,
+                'msg' => 'Successfully updated planet info!',
+                'data' => $blocks,
+                'resultrates' => $planet->blocks()->get(),
+            ]);
+        }
 
         return response()->json([
             'status' => 1,
