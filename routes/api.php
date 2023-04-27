@@ -50,8 +50,18 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('users/{user}/planets', [ApiPlanetController::class, 'showByUser']);
 });
+
+// BLOCKS
+Route::get('blocks/{block}', [ApiBlockController::class, 'show']);
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('blocks', [ApiBlockController::class, 'index']);
+});
+Route::group(['middleware' => ['auth:sanctum', 'role:loader,admin']], function () {
+    Route::post('blocks', [ApiBlockController::class, 'store']);
+    Route::put('blocks/{block}', [ApiBlockController::class, 'update']);
+    Route::delete('blocks/{block}', [ApiBlockController::class, 'destroy']);
+});
 //Route::apiResource('planets', ApiPlanetController::class)->middleware('auth:sanctum');
-Route::apiResource('blocks', ApiBlockController::class)->middleware('auth:sanctum');
 Route::apiResource('comments', ApiCommentController::class)->middleware('auth:sanctum');
 Route::apiResource('ratings', ApiRatingController::class)->middleware('auth:sanctum');
 

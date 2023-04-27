@@ -15,6 +15,6 @@ class Block extends Model
     ];
 
     public function planets(){
-        return $this->belongsToMany(Planet::class, 'planet_block');
+        return $this->belongsToMany(Planet::class, 'planet_block')->withPivot('rate')->withTimestamps();
     }
 }

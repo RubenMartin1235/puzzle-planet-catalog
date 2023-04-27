@@ -26,6 +26,27 @@ class Planet extends Model
     }
 
     public function blocks(){
-        return $this->belongsToMany(Block::class, 'planet_block');
+        return $this->belongsToMany(Block::class, 'planet_block')->withPivot('rate')->withTimestamps();
+    }
+
+    public function hasBlock($block) {
+        if ($this->blocks()->where('name', $block)->first()) {
+            return true;
+        }
+        return false;
+    }
+    public function hasAnyBlock($blocks) {
+        if (is_array($blocks)) {
+            foreach ($blocks as $block) {
+                if ($this->hasBlock($block)) {
+                    return true;
+                }
+            }
+        } else {
+            if ($this->hasBlock($blocks)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -57,7 +57,7 @@ class PlanetController extends Controller
      */
     public function show(string $id)
     {
-        $planet = Planet::where('id', $id)->get();
+        $planet = Planet::find($id);
         if (!$planet) {
             return response()->json([
                 'success' => false,
@@ -96,7 +96,7 @@ class PlanetController extends Controller
         if (!isset($planet->id)) {
             return response()->json([
                 "status" => 0,
-                "msg" => "This planet does not exist!",
+                "msg" => "Planet with id {$id} does not exist!",
             ],404);
         }
 
@@ -129,30 +129,33 @@ class PlanetController extends Controller
         $planet->fill($validated->toArray());
         $planet->save();
 
+        $successresult_array = [
+            'status' => 1,
+            'msg' => 'Successfully updated planet info!',
+        ];
+
         $blocks = $request->blocks;
         if (isset($blocks)) {
             foreach ($blocks as $block_type => $rate) {
                 $block = Block::where('name', $block_type)->first();
-                if ($rate <= 0) {
-                    $planet->detach($block);
-                } else {
-                    $planet->blocks()->attach($block, ['rate' => $rate]);
+                if ($block <> null && is_numeric($rate)) {
+                    if ($rate <= 0) {
+                        $planet->blocks()->detach($block);
+                    } else {
+                        $pivotdata = ['rate' => $rate];
+                        if ($planet->hasBlock($block->name)) {
+                            $planet->blocks()->updateExistingPivot($block->id, $pivotdata);
+                        } else {
+                            $planet->blocks()->attach($block, $pivotdata);
+                        }
+                    }
                 }
             }
-            return response()->json([
-                'status' => 1,
-                'msg' => 'Successfully updated planet info!',
-                'data' => $blocks,
-                'resultrates' => $planet->blocks()->get(),
-            ]);
+            $successresult_array['data_blocks'] = $planet->blocks()->get(['name','rate'])->makeHidden('pivot');
         }
 
-        return response()->json([
-            'status' => 1,
-            'msg' => 'Successfully updated planet info!',
-        ]);
+        return response()->json($successresult_array);
     }
-
 
 
 

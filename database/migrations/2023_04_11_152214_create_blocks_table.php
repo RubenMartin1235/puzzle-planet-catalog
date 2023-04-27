@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('blocks', function (Blueprint $table) {
             $table->id();
             $table->string('name',16)->unique();
-            $table->string('color')->nullable();
+            $table->string('color')->default("#787878");
             $table->timestamps();
         });
     }
