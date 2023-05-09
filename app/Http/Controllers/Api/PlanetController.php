@@ -70,6 +70,21 @@ class PlanetController extends Controller
         ], 200);
     }
 
+    public function showBlocks(string $id)
+    {
+        $planet = Planet::find($id);
+        if (!$planet) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Planet with id ' . $id . ' not found.'
+            ], 404);
+        }
+        $blocks = $planet->blocks()->get(['name','rate'])->makeHidden('pivot');
+        return response()->json([
+            'success' => true,
+            'data' => $blocks->toArray()
+        ], 200);
+    }
     /**
      * Display a listing of the resource by user
      */
@@ -180,7 +195,7 @@ class PlanetController extends Controller
         }
         return response()->json([
             "status" => 0,
-            "msg" => "You do not have permission to modify this planet!",
+            "msg" => "You do not have permission to delete this planet!",
         ],404);
     }
 }
