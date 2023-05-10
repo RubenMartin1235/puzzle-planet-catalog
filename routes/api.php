@@ -75,6 +75,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('comments/{comment}', [ApiCommentController::class, 'destroy']);          // Delete comment.
 });
 
-Route::apiResource('comments', ApiCommentController::class)->middleware('auth:sanctum');
-Route::apiResource('ratings', ApiRatingController::class)->middleware('auth:sanctum');
+// RATINGS
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('planets/{planet}/ratings', [ApiRatingController::class, 'store']);       // Make rating on a planet.
+    Route::delete('planets/{planet}/ratings', [ApiRatingController::class, 'destroy']);   // Delete rating.
+});
+Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
+    Route::get('planets/{planet}/ratings', [ApiRatingController::class, 'showByPlanet']); // Show ratings made on a planet.
+    Route::get('users/{user}/ratings', [ApiRatingController::class, 'showByUser']);       // Show ratings made by another user.
+});
+
 

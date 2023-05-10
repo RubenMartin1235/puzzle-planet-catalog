@@ -37,7 +37,7 @@ class CommentController extends Controller
         if (!$pl) {
             return response()->json([
                 'success' => false,
-                'message' => "Planet {$planet} not found",
+                'message' => "Planet with id {$planet_id} not found",
             ], 404);
         }
 
@@ -77,7 +77,17 @@ class CommentController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $comment = Comment::find($id);
+        if (!$comment) {
+            return response()->json([
+                'success' => false,
+                'message' => "Comment with id {$id} not found."
+            ], 404);
+        }
+        return response()->json([
+            'success' => true,
+            'data' => $comment->toArray()
+        ], 200);
     }
 
     public function showByUser(string $id)
@@ -161,8 +171,25 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
-        //
+        $comment = Comment::find($id);
+        if (!$comment) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Comment with id ' . $id . ' not found.'
+            ], 404);
+        }
+        if ($request->user()->hasAnyRole(['admin','loader']) || $comment->user->id == $request->user()->id) {
+            $comment->delete();
+            return response()->json([
+                'status' => 1,
+                'msg' => 'Successfully deleted comment.',
+            ]);
+        }
+        return response()->json([
+            "status" => 0,
+            "msg" => "You do not have permission to delete this comment!",
+        ],404);
     }
 }
