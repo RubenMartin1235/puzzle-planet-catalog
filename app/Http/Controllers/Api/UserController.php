@@ -39,7 +39,7 @@ class UserController extends Controller
             "status" => 1,
             "msg" => "Successfully logged in!",
             "access_token" => $token,
-        ]);
+        ],200);
     }
 
     public function logout()
@@ -48,7 +48,7 @@ class UserController extends Controller
         return response()->json([
             "status" => 1,
             "msg" => "Successfully logged out.",
-        ]);
+        ],200);
     }
 
     public function register(Request $request)
@@ -71,7 +71,7 @@ class UserController extends Controller
         return response()->json([
             'status' => 1,
             'msg' => 'Successfully signed up user!'
-        ]);
+        ],200);
     }
 
     public function profile() {
