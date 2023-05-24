@@ -47,8 +47,8 @@ class PlanetController extends Controller
         $planet->save();
 
         return response()->json([
-            'status' => 1,
-            'msg' => 'Successfully created planet!'
+            'success' => false,
+            'message' => 'Successfully created planet!'
         ]);
     }
 
