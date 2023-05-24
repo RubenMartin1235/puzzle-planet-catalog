@@ -12,11 +12,7 @@
                     {{ __("You're logged in!") }}
                 </div>
 
-                @foreach ($planets as $pl)
-                    <div class="p-3 text-gray-900">
-                        {{ $pl->name }}
-                    </div>
-                @endforeach
+                @include('planets.partials.planetlist')
             </div>
         </div>
     </div>
