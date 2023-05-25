@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -20,7 +21,11 @@ class ProfileController extends Controller
             'user' => $request->user(),
         ]);
     }
-
+    public function show(Request $request, User $user): View
+    {
+        $planets = $user->planets()->paginate(15);
+        return view('profile.show', compact('user','planets'));
+    }
     /**
      * Update the user's profile information.
      */

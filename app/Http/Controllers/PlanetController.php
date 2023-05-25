@@ -24,4 +24,9 @@ class PlanetController extends Controller
             'blocks' => $blocks
         ]);
     }
+    public function create(Request $request)
+    {
+        return view('planets.create',[
+        ]);
+    }
 }

@@ -4,7 +4,7 @@
             <a href="{{ route('planets.index') }}"
             class="text-gray-500"
             >{{ __('Planets') }}</a>
-            / {{ $pl->name }}
+            / Create planet
         </h2>
     </x-slot>
 
@@ -18,7 +18,10 @@
                     <h4 class="text-3xl font-bold text-center">{{ $pl->name }}</h4>
                     <div class="flex flex-row gap-6 p-6">
                         <div class="w-[30%]">
-                            @include('planets.partials.planetimg')
+                            <img
+                                src="https://picsum.photos/seed/picsum/64/64"
+                                class="w-full"
+                            >
                         </div>
                         <p class="w-[40%] text-lg text-gray-800">{{ $pl->bio }}</p>
                         <div class="grow">
