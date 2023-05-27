@@ -28,11 +28,10 @@ Route::middleware('auth')->group(function () {
 });
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/planets/create', [PlanetController::class, 'create'])->name('planets.create');
+    Route::post('/planets', [PlanetController::class, 'store'])->name('planets.store');
 });
 Route::get('/planets', [PlanetController::class, 'index'])->name('planets.index');
 Route::get('/planets/{planet}', [PlanetController::class, 'show'])->name('planets.show');
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/planets/create', [PlanetController::class, 'create'])->name('planets.create');
-});
 
 require __DIR__.'/auth.php';

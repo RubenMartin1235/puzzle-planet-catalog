@@ -13,6 +13,7 @@ class Planet extends Model
         'name',
         'bio',
         'description',
+        'image'
     ];
 
     function user(){
