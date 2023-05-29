@@ -28,7 +28,6 @@ class PlanetController extends Controller
     {
         $allblocks = Block::all();
         return view('planets.create',[
-            'pl' => Planet::find(1),
             'allblocks' => $allblocks,
         ]);
     }
@@ -46,6 +45,26 @@ class PlanetController extends Controller
             $bl_rate = $request->input("block-$i-rate");
             $planet->blocks()->attach($bl, ['rate'=>$bl_rate]);
         }
+        return redirect(route('planets.index'));
+    }
+    public function edit(Request $request, Planet $planet)
+    {
+        $allblocks = Block::all();
+        $plblocks = $planet->blocks;
+        return view('planets.edit',[
+            'pl' => $planet,
+            'allblocks' => $allblocks,
+            'plblocks' => $plblocks,
+        ]);
+    }
+    public function update(Request $request, Planet $planet)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:24',
+            'bio' => 'required|string|max:128',
+            'description' => 'required|string|max:1000',
+        ]);
+        $planet = $request->user()->planets()->fill($validated);
         return redirect(route('planets.index'));
     }
 }

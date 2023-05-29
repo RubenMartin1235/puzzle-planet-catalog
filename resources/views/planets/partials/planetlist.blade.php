@@ -1,7 +1,7 @@
 <div class="grid gap-4 md:grid-cols-3 grid-cols-2">
     @foreach ($planets as $pl)
         <div
-        class="bg-white overflow-hidden shadow-md sm:rounded-lg p-3 text-gray-900 flex flex-row">
+        class="bg-white overflow-hidden shadow-md sm:rounded-lg p-3 text-gray-900 flex flex-row w-full">
             <div class="">
                 <a class="flex sm:flex-row flex-col justify-between gap-3"
                 href="{{ route('planets.show', $pl) }}">
@@ -13,14 +13,16 @@
                         <p class="text-sm text-gray-700">{{ $pl->bio }}</p>
                     </div>
                 </a>
-                <div class="flex flex-row justify-between">
+                <div class="flex flex-row justify-between w-full">
                     @if(Auth::user() == $pl->user)
                         <div class="flex flex-row justify-left gap-4">
-                            <x-primary-button class="mt-4">{{ __('Edit') }}</x-primary-button>
-                            <x-primary-button class="mt-4 bg-danger">{{ __('Delete') }}</x-primary-button>
+                            <a href="{{ route('planets.edit', $pl) }}">
+                                <x-primary-button class="mt-4">{{ __('Edit') }}</x-primary-button>
+                            </a>
+                            <x-danger-button class="mt-4">{{ __('Delete') }}</x-danger-button>
                         </div>
                     @endif
-                    <div class="w-full text-xs text-gray-500 self-end text-right">
+                    <div class="grow text-xs text-gray-500 self-end text-right">
                         <span>made by <a href="{{ route('profile.show', $pl->user) }}" class="text-gray-700 underline">{{ $pl->user->name }}</a> on {{ Carbon\Carbon::parse($pl->created_at)->format('Y/m/d') }}</span>
                     </div>
                 </div>

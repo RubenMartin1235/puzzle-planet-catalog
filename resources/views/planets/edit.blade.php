@@ -4,7 +4,7 @@
             <a href="{{ route('planets.index') }}"
             class="text-gray-500"
             >{{ __('Planets') }}</a>
-            / Create planet
+            / Edit planet
         </h2>
     </x-slot>
 
@@ -13,14 +13,16 @@
             <div class="flex flex-col">
                 <form
                 method="POST"
-                action="{{ route('planets.store') }}"
+                action="{{ route('planets.update', $pl) }}"
                 class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-3
                 text-gray-900 flex flex-col gap-3"
                 >
                     @csrf
+                    @method("PUT")
                     <input
                         name="name"
                         type="text" required
+                        value="{{ $pl->name }}"
                         placeholder="{{ __('Enter planet name here') }}"
                         maxlength="24"
                         class="block w-full text-3xl font-bold text-center border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mb-2"
@@ -35,7 +37,7 @@
                             maxlength="128" required
                             placeholder="{{ __('Enter a short bio for your planet (128 characters max)') }}"
                             class="block w-2/6 text-md text-gray-800 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
-                        >{{ old('bio') }}</textarea>
+                        >{{ $pl->bio }}</textarea>
                         <div class="w-3/6">
                             <label for="blocks-maxrate" class="text-sm">
                                 Max value in sliders:
