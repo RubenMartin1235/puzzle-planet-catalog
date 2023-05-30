@@ -12,7 +12,7 @@ class PlanetController extends Controller
 {
     public function index()
     {
-        $planets = Planet::paginate(15);
+        $planets = Planet::latest()->paginate(15);
         return view('planets.index',compact('planets'));
     }
     public function show(Request $request, Planet $planet)
@@ -40,11 +40,7 @@ class PlanetController extends Controller
         ]);
         $planet = $request->user()->planets()->make($validated);
         $planet->save();
-        for ($i=1; ($i < 10)&&($bl_name = $request->input("block-$i-type")); $i++) {
-            $bl = Block::where('name',$bl_name)->first();
-            $bl_rate = $request->input("block-$i-rate");
-            $planet->blocks()->attach($bl, ['rate'=>$bl_rate]);
-        }
+        $this->resolvePlanetBlocks($request, $planet);
         return redirect(route('planets.index'));
     }
     public function edit(Request $request, Planet $planet)
@@ -65,6 +61,11 @@ class PlanetController extends Controller
             'description' => 'required|string|max:1000',
         ]);
         $planet->update($validated);
+        $this->resolvePlanetBlocks($request, $planet);
+        return redirect(route('planets.show',$planet));
+    }
+
+    protected function resolvePlanetBlocks(Request $request, Planet $planet) {
         $planet->blocks()->detach();
         $allbl_length = Block::count();
         $blockfield_keys = array_values(array_filter(
@@ -87,6 +88,5 @@ class PlanetController extends Controller
                 }
             }
         }
-        return redirect(route('planets.show',$planet));
     }
 }
