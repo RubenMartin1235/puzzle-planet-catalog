@@ -8,6 +8,9 @@ function addBlock(type, rate) {
         let blname = block.name;
         opt.value = blname;
         opt.innerHTML = blname;
+        if (blname == type) {
+            opt.selected = true;
+        }
         slct.appendChild(opt);
     }
     blocklist.appendChild(slct);
@@ -17,6 +20,7 @@ function addBlock(type, rate) {
     rateSlider.name = `block-${blocksNumber}-rate`;
     rateSlider.min = 0;
     rateSlider.max = maxRateSlider.value;
+    rateSlider.value = rate ?? Math.floor(maxRateSlider.value / 2);
     blocklist.appendChild(rateSlider);
 
     let rateLabel = document.createElement('label');
@@ -43,15 +47,23 @@ function updateOneSlider(slider){
     let label = blocklist.querySelector(`label[id^='${slider.name}']`)
     label.innerHTML = slider.value;
 }
-let allblocks = {!! json_encode($allblocks->toArray(), JSON_HEX_TAG) !!};
 let blocklist = document.querySelector('#blocklist');
 let addBlockBtn = document.querySelector('#btn-addblock');
 let maxRateSlider = document.querySelector('#blocks-maxrate');
 let blocksNumber = 0;
 
-addBlock();
+if (planetblocks.length == 0) {
+    addBlock('Air', 50);
+}
+for (const bl of planetblocks) {
+    let rate = bl.pivot.rate
+    addBlock(bl.name, rate);
+    if (rate > maxRateSlider.value) {
+        maxRateSlider.value = rate;
+    }
+}
 addBlockBtn.addEventListener('click', (e)=>{
-    addBlock();
+    addBlock('Air', 50);
     updateBlocks();
 });
 blocklist.addEventListener('input', (e)=>{

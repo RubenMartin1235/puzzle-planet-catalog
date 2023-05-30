@@ -38,6 +38,9 @@
                         </div>
                     </div>
                     <p class="text-md text-gray-600 p-6">{{ $pl->description }}</p>
+                    @if(Auth::user() == $pl->user)
+                        @include('planets.partials.actionslist')
+                    @endif
                 </div>
             </div>
         </div>

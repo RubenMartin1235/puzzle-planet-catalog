@@ -75,12 +75,13 @@
                         maxlength="1000" required
                         placeholder="{{ __('Enter a detailed description for your planet (1000 characters max)') }}"
                         class="text-md text-gray-600 p-6 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
-                    >{{ old('description') }}</textarea>
+                    >{{ $pl->description }}</textarea>
                     <x-input-error :messages="$errors->get('message')" class="mt-2" />
-                    <x-primary-button class="mt-4 text-2xl">{{ __('Create planet') }}</x-primary-button>
+                    <x-primary-button class="mt-4 text-2xl">{{ __('Edit planet') }}</x-primary-button>
                 </form>
             </div>
         </div>
     </div>
+    @include('planets.partials.planeteditor_initvars')
     <script src="{{ asset('scripts/planeteditor.js') }}"></script>
 </x-app-layout>

@@ -64,7 +64,21 @@ class PlanetController extends Controller
             'bio' => 'required|string|max:128',
             'description' => 'required|string|max:1000',
         ]);
-        $planet = $request->user()->planets()->fill($validated);
-        return redirect(route('planets.index'));
+        $planet->update($validated);
+        for ($i=1; ($i < 10)&&($bl_name = $request->input("block-$i-type")); $i++) {
+            $bl = Block::where('name',$bl_name)->first();
+            $bl_rate = $request->input("block-$i-rate");
+            if ($bl_rate <= 0) {
+                $planet->blocks()->detach($bl);
+            } else {
+                $pivotdata = ['rate' => $bl_rate];
+                if ($planet->hasBlock($bl->name)) {
+                    $planet->blocks()->updateExistingPivot($bl->id, $pivotdata);
+                } else {
+                    $planet->blocks()->attach($bl, $pivotdata);
+                }
+            }
+        }
+        return redirect(route('planets.show',$planet));
     }
 }

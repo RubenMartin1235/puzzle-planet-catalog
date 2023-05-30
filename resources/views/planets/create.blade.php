@@ -28,7 +28,10 @@
                     <div class="flex flex-row gap-6 p-6">
                         <div class="w-1/6 form-control overflow-hidden">
                             <input type="file" name="image" class="form-control-file">
-                            @include('planets.partials.planetimg')
+                            <img
+                                src="{{ "https://picsum.photos/seed/picsum/64/64" }}"
+                                class="w-full"
+                            >
                         </div>
                         <textarea
                             name="bio"
@@ -80,5 +83,6 @@
             </div>
         </div>
     </div>
+    @include('planets.partials.planeteditor_initvars')
     <script src="{{ asset('scripts/planeteditor.js') }}"></script>
 </x-app-layout>

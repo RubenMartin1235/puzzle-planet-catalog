@@ -15,12 +15,7 @@
                 </a>
                 <div class="flex flex-row justify-between w-full">
                     @if(Auth::user() == $pl->user)
-                        <div class="flex flex-row justify-left gap-4">
-                            <a href="{{ route('planets.edit', $pl) }}">
-                                <x-primary-button class="mt-4">{{ __('Edit') }}</x-primary-button>
-                            </a>
-                            <x-danger-button class="mt-4">{{ __('Delete') }}</x-danger-button>
-                        </div>
+                        @include('planets.partials.actionslist')
                     @endif
                     <div class="grow text-xs text-gray-500 self-end text-right">
                         <span>made by <a href="{{ route('profile.show', $pl->user) }}" class="text-gray-700 underline">{{ $pl->user->name }}</a> on {{ Carbon\Carbon::parse($pl->created_at)->format('Y/m/d') }}</span>
