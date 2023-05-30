@@ -43,7 +43,7 @@
                                 Max value in sliders:
                                 <input type="number" id="blocks-maxrate"
                                     maxlength="16" placeholder="Max value for sliders"
-                                    class="text-sm" value="200" max="10000" min="1"
+                                    class="text-sm" value="200" max="10000" min="50"
                                 >
                             </label>
 
@@ -77,7 +77,13 @@
                         class="text-md text-gray-600 p-6 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
                     >{{ $pl->description }}</textarea>
                     <x-input-error :messages="$errors->get('message')" class="mt-2" />
-                    <x-primary-button class="mt-4 text-2xl">{{ __('Edit planet') }}</x-primary-button>
+                    <div class="grow grid gap-2 grid-cols-2
+                    grid-cols-[repeat(2,1fr)]" id="actionbtns">
+                        <x-primary-button class="mt-4 text-xl">{{ __('Apply changes') }}</x-primary-button>
+                        <a href="{{ url()->previous() }}">
+                            <x-primary-button type="button" class="w-full mt-4 text-xl bg-gray-400 hover:bg-gray-300 text-black">{{ __('Cancel') }}</x-primary-button>
+                        </a>
+                    </div>
                 </form>
             </div>
         </div>

@@ -44,7 +44,7 @@
                                 Max value in sliders:
                                 <input type="number" id="blocks-maxrate"
                                     maxlength="16" placeholder="Max value for sliders"
-                                    class="text-sm" value="200" max="10000" min="1"
+                                    class="text-sm" value="200" max="10000" min="50"
                                 >
                             </label>
 

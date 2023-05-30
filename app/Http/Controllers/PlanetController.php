@@ -65,12 +65,20 @@ class PlanetController extends Controller
             'description' => 'required|string|max:1000',
         ]);
         $planet->update($validated);
-        for ($i=1; ($i < 10)&&($bl_name = $request->input("block-$i-type")); $i++) {
+        $planet->blocks()->detach();
+        $allbl_length = Block::count();
+        $blockfield_keys = array_values(array_filter(
+            array_keys($request->input()),
+            function ($keyname) {
+                return str_contains($keyname, 'block-');
+            }
+        ));
+        $bfk_len = count($blockfield_keys) / 2;
+        for ($i=0; ($i < $allbl_length)&&($i < $bfk_len); $i++) {
+            $bl_name = $request->input($blockfield_keys[2*$i]);
             $bl = Block::where('name',$bl_name)->first();
-            $bl_rate = $request->input("block-$i-rate");
-            if ($bl_rate <= 0) {
-                $planet->blocks()->detach($bl);
-            } else {
+            $bl_rate = $request->input($blockfield_keys[(2*$i)+1]);
+            if ($bl_rate > 0) {
                 $pivotdata = ['rate' => $bl_rate];
                 if ($planet->hasBlock($bl->name)) {
                     $planet->blocks()->updateExistingPivot($bl->id, $pivotdata);

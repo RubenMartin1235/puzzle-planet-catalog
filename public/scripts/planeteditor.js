@@ -1,5 +1,6 @@
 function addBlock(type, rate) {
-    blocksNumber = Math.floor((blocklist.children.length) / 4)+1;
+    //blocksNumber = Math.floor((blocklist.children.length) / 4)+1;
+    blocksNumber++;
     let slct = document.createElement('select');
     slct.name = `block-${blocksNumber}-type`;
     slct.required = true;
@@ -29,8 +30,9 @@ function addBlock(type, rate) {
     rateLabel.className = "flex flex-row items-center";
     blocklist.appendChild(rateLabel);
 
-    let delBtn = document.createElement('x-danger-button');
-    delBtn.id = "btn-delblock";
+    let delBtn = document.createElement('button');
+    delBtn.id = `btn-del-block-${blocksNumber}`;
+    delBtn.dataset.plblock = `${blocksNumber}`;
     delBtn.className = "text-center text-2xl font-bolder inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150";
     delBtn.type = 'button';
     delBtn.innerHTML = '-';
@@ -47,6 +49,7 @@ function updateOneSlider(slider){
     let label = blocklist.querySelector(`label[id^='${slider.name}']`)
     label.innerHTML = slider.value;
 }
+
 let blocklist = document.querySelector('#blocklist');
 let addBlockBtn = document.querySelector('#btn-addblock');
 let maxRateSlider = document.querySelector('#blocks-maxrate');
@@ -56,20 +59,34 @@ if (planetblocks.length == 0) {
     addBlock('Air', 50);
 }
 for (const bl of planetblocks) {
-    let rate = bl.pivot.rate
+    let rate = bl.pivot.rate;
     addBlock(bl.name, rate);
     if (rate > maxRateSlider.value) {
         maxRateSlider.value = rate;
     }
 }
 addBlockBtn.addEventListener('click', (e)=>{
-    addBlock('Air', 50);
+    if (blocksNumber < allblocks.length) {
+        addBlock('Air', 50);
+    }
     updateBlocks();
 });
 blocklist.addEventListener('input', (e)=>{
     const targ = e.target;
     if (targ.type == 'range') {
         updateOneSlider(targ);
+    }
+});
+blocklist.addEventListener('click', (e)=>{
+    const targ = e.target;
+    let tid = targ.id;
+    if (tid !== null && tid.includes('del-block')) {
+        const matchingId = `block-${targ.dataset.plblock}`;
+        const plblockCells = blocklist.querySelectorAll(`[id*='${matchingId}'], [name*='${matchingId}']`);
+        for (const cell of plblockCells) {
+            cell.remove();
+            console.log(plblockCells);
+        }
     }
 });
 maxRateSlider.addEventListener('change', (e)=>{
