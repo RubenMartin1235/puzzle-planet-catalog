@@ -38,6 +38,8 @@ class PlanetController extends Controller
             'bio' => 'required|string|max:128',
             'description' => 'required|string|max:1000',
         ]);
+        $imgpath = $this->resolvePlanetImage($request, $planet);
+        $validated['image'] = $imgpath;
         $planet = $request->user()->planets()->make($validated);
         $planet->save();
         $this->resolvePlanetBlocks($request, $planet);
@@ -60,6 +62,8 @@ class PlanetController extends Controller
             'bio' => 'required|string|max:128',
             'description' => 'required|string|max:1000',
         ]);
+        $imgpath = $this->resolvePlanetImage($request, $planet);
+        $validated['image'] = $imgpath;
         $planet->update($validated);
         $this->resolvePlanetBlocks($request, $planet);
         return redirect(route('planets.show',$planet));
@@ -88,5 +92,13 @@ class PlanetController extends Controller
                 }
             }
         }
+    }
+    protected function resolvePlanetImage(Request $request, Planet $planet) {
+        $imgfile = $request->file('image');
+        $path = ($imgfile) ? $imgfile->storeAs(
+            'planets', $planet->id . '.' . $imgfile->extension(),
+            'public'
+        ) : null;
+        return $path;
     }
 }

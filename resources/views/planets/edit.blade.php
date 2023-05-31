@@ -16,6 +16,7 @@
                 action="{{ route('planets.update', $pl) }}"
                 class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-3
                 text-gray-900 flex flex-col gap-3"
+                enctype="multipart/form-data"
                 >
                     @csrf
                     @method("PUT")
@@ -29,7 +30,7 @@
                     >
                     <div class="flex flex-row gap-6 p-6">
                         <div class="w-1/6 form-control overflow-hidden">
-                            <input type="file" name="image" class="form-control-file">
+                            @include('planets.partials.planeteditor_imginput')
                             @include('planets.partials.planetimg')
                         </div>
                         <textarea

@@ -27,11 +27,8 @@
                     >
                     <div class="flex flex-row gap-6 p-6">
                         <div class="w-1/6 form-control overflow-hidden">
-                            <input type="file" name="image" class="form-control-file">
-                            <img
-                                src="{{ "https://picsum.photos/seed/picsum/64/64" }}"
-                                class="w-full"
-                            >
+                            @include('planets.partials.planeteditor_imginput')
+                            @include('planets.partials.planetimg')
                         </div>
                         <textarea
                             name="bio"

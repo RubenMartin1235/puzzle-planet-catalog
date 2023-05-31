@@ -53,6 +53,8 @@ function updateOneSlider(slider){
 let blocklist = document.querySelector('#blocklist');
 let addBlockBtn = document.querySelector('#btn-addblock');
 let maxRateSlider = document.querySelector('#blocks-maxrate');
+let planetImgInput = document.querySelector('#planet-image-input');
+let planetImg = document.querySelector('#planet-image-view');
 let blocksNumber = 0;
 
 if (planetblocks.length == 0) {
@@ -85,12 +87,21 @@ blocklist.addEventListener('click', (e)=>{
         const plblockCells = blocklist.querySelectorAll(`[id*='${matchingId}'], [name*='${matchingId}']`);
         for (const cell of plblockCells) {
             cell.remove();
-            console.log(plblockCells);
+            //console.log(plblockCells);
         }
     }
 });
 maxRateSlider.addEventListener('change', (e)=>{
     updateBlocks();
+});
+planetImgInput.addEventListener('change',(e)=>{
+    const targ = e.target;
+    let newimg = targ.files[0];
+    if (!newimg.type.includes(`image/`)) {
+        return;
+    }
+    let newsrc = URL.createObjectURL(newimg);
+    planetImg.src = newsrc;
 });
 /*
 <x-danger-button id="btn-delblock"
