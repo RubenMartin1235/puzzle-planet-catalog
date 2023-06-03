@@ -24,21 +24,23 @@ class CommentSeeder extends Seeder
         $planet_lastar = Planet::where('name','Lastar')->first();
         $planet_caustix = Planet::where('name','Caustix')->first();
 
-        $comment = Comment::factory()->create([
+        $comment = Comment::factory()->make([
             'user_id' => $user_fl->id,
-            'planet_id' => $planet_lastar->id,
             'message' => fake()->text(32)
         ]);
-        $comment = Comment::factory()->create([
-            'user_id' => $user_ksh->id,
-            'planet_id' => $planet_lastar->id,
-            'message' => "berigoo!"
-        ]);
+        $comment->commentable()->associate($planet_lastar)->save();
 
-        $comment = Comment::factory()->create([
+        $comment = Comment::factory()->make([
             'user_id' => $user_ksh->id,
-            'planet_id' => $planet_caustix->id,
             'message' => "berigoo!"
         ]);
+        $comment->commentable()->associate($planet_lastar)->save();
+
+        $comment = Comment::factory()->make([
+            'user_id' => $user_ksh->id,
+            'message' => "berigoo!"
+        ]);
+        $comment->commentable()->associate($planet_caustix)->save();
+
     }
 }

@@ -11,12 +11,11 @@ class Rating extends Model
 
     protected $fillable = [
         'user_id',
-        'planet_id',
         'score',
     ];
 
-    function planet(){
-        return $this->belongsTo(Planet::class);
+    function rateable(){
+        return $this->morphTo();
     }
     function user(){
         return $this->belongsTo(User::class);

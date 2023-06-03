@@ -23,31 +23,31 @@ class RatingSeeder extends Seeder
         $planet_lastar = Planet::where('name','Lastar')->first();
         $planet_caustix = Planet::where('name','Caustix')->first();
 
-        $rating = Rating::factory()->create([
+        $rating = Rating::factory()->make([
             'user_id' => $user_fl->id,
-            'planet_id' => $planet_lastar->id,
             'score' => 5
         ]);
-        $rating = Rating::factory()->create([
+        $rating->rateable()->associate($planet_lastar)->save();
+        $rating = Rating::factory()->make([
             'user_id' => $user_ksh->id,
-            'planet_id' => $planet_lastar->id,
             'score' => 5
         ]);
+        $rating->rateable()->associate($planet_lastar)->save();
 
-        $rating = Rating::factory()->create([
+        $rating = Rating::factory()->make([
             'user_id' => $user_ksh->id,
-            'planet_id' => $planet_caustix->id,
             'score' => 5
         ]);
-        $rating = Rating::factory()->create([
+        $rating->rateable()->associate($planet_caustix)->save();
+        $rating = Rating::factory()->make([
             'user_id' => $user_lsm->id,
-            'planet_id' => $planet_caustix->id,
             'score' => 3
         ]);
-        $rating = Rating::factory()->create([
+        $rating->rateable()->associate($planet_caustix)->save();
+        $rating = Rating::factory()->make([
             'user_id' => $user_loader->id,
-            'planet_id' => $planet_caustix->id,
             'score' => 4
         ]);
+        $rating->rateable()->associate($planet_caustix)->save();
     }
 }

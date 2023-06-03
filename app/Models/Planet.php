@@ -20,10 +20,10 @@ class Planet extends Model
         return $this->belongsTo(User::class);
     }
     public function comments() {
-        return $this->hasMany(Comment::class);
+        return $this->morphMany(Comment::class, 'commentable');
     }
     public function ratings() {
-        return $this->hasMany(Rating::class);
+        return $this->morphMany(Rating::class, 'rateable');
     }
 
     public function blocks(){

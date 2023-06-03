@@ -11,12 +11,11 @@ class Comment extends Model
 
     protected $fillable = [
         'user_id',
-        'planet_id',
         'message',
     ];
 
-    function planet(){
-        return $this->belongsTo(Planet::class);
+    function commentable(){
+        return $this->morphTo();
     }
     function user(){
         return $this->belongsTo(User::class);
