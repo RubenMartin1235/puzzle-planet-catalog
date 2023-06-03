@@ -48,6 +48,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('planets/{planet}', [ApiPlanetController::class, 'update']);
     Route::delete('planets/{planet}', [ApiPlanetController::class, 'destroy']);
 
+    Route::get('profile/planets', [ApiPlanetController::class, 'showOwn']);
     Route::get('users/{user}/planets', [ApiPlanetController::class, 'showByUser']);
 });
 Route::get('planets/{planet}/blocks', [ApiPlanetController::class, 'showBlocks']);
@@ -66,7 +67,7 @@ Route::group(['middleware' => ['auth:sanctum', 'role:loader,admin']], function (
 // COMMENTS
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('comments/{comment}', [ApiCommentController::class, 'show']);    // Show comment by ID.
-    Route::get('comments', [ApiCommentController::class, 'showOwn']);           // Show comments of authenticated user.
+    Route::get('profile/comments', [ApiCommentController::class, 'showOwn']);           // Show comments of authenticated user.
     Route::get('planets/{planet}/comments', [ApiCommentController::class, 'showByPlanet']); // Show comments made on a planet.
     Route::get('users/{user}/comments', [ApiCommentController::class, 'showByUser']);       // Show comments made by another user.
 
@@ -74,15 +75,23 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('comments/{comment}', [ApiCommentController::class, 'update']);              // Update comment.
     Route::delete('comments/{comment}', [ApiCommentController::class, 'destroy']);          // Delete comment.
 });
+Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
+    Route::get('comments', [ApiCommentController::class, 'index']);    // Show comment by ID.
+});
 
 // RATINGS
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::post('planets/{planet}/ratings', [ApiRatingController::class, 'store']);       // Make rating on a planet.
-    Route::delete('planets/{planet}/ratings', [ApiRatingController::class, 'destroy']);   // Delete rating.
+    Route::get('ratings/{rating}', [ApiRatingController::class, 'show']);               // Show rating by ID.
+    Route::get('profile/ratings', [ApiRatingController::class, 'showOwn']);             // Show ratings of authenticated user.
+    Route::get('planets/{planet}/rating', [ApiRatingController::class, 'showAvgOfPlanet']);       // Show average rating of a planet.
+    Route::post('planets/{planet}/ratings', [ApiRatingController::class, 'store']);     // Make rating on a planet.
+    Route::put('ratings/{rating}', [ApiRatingController::class, 'update']);             // Update rating.
+    Route::delete('ratings/{rating}', [ApiRatingController::class, 'destroy']);         // Delete rating.
 });
 Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
-    Route::get('planets/{planet}/ratings', [ApiRatingController::class, 'showByPlanet']); // Show ratings made on a planet.
-    Route::get('users/{user}/ratings', [ApiRatingController::class, 'showByUser']);       // Show ratings made by another user.
+    Route::get('ratings', [ApiRatingController::class, 'index']);              // Show rating by ID.
+    Route::get('planets/{planet}/ratings', [ApiRatingController::class, 'showByPlanet']);   // Show ratings made on a planet.
+    Route::get('users/{user}/ratings', [ApiRatingController::class, 'showByUser']);         // Show ratings made by another user.
 });
 
 

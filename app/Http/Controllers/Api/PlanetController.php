@@ -93,6 +93,11 @@ class PlanetController extends Controller
         $planets = Planet::where('user_id', $user_id);
         return response()->json($planets);
     }
+    public function showOwn(Request $request)
+    {
+        $planets = Planet::where('user_id', Auth::user()->id);
+        return response()->json($planets);
+    }
 
     /**
      * Show the form for editing the specified resource.

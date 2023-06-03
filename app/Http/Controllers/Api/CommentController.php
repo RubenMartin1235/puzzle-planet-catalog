@@ -17,7 +17,11 @@ class CommentController extends Controller
      */
     public function index()
     {
-        //
+        $comments = Comment::all();
+        return response()->json([
+            'success' => true,
+            'data' => $comments->toArray()
+        ], 200);
     }
 
     /**
@@ -63,12 +67,13 @@ class CommentController extends Controller
         ]);
         */
         $comment = Comment::factory()->make($validated);
-        $comment->planet()->associate($pl);
+        $comment->commentable()->associate($pl);
         $comment->user()->associate($author);
         $comment->save();
 
         return response()->json([
             'success' => true,
+            'message' => "Comment successfully made!",
         ], 200);
     }
 
@@ -89,7 +94,14 @@ class CommentController extends Controller
             'data' => $comment->toArray()
         ], 200);
     }
-
+    public function showOwn()
+    {
+        $comments = Auth::user()->comments()->get();
+        return response()->json([
+            'success' => true,
+            'data' => $comments->toArray()
+        ], 200);
+    }
     public function showByUser(string $id)
     {
         $user = User::find($id);
@@ -148,8 +160,8 @@ class CommentController extends Controller
         } else {
             if ($comment->user_id <> $request->user()->id) {
                 return response()->json([
-                    "status" => 0,
-                    "msg" => "You do not have permission to modify this comment!",
+                    "success" => false,
+                    "message" => "You do not have permission to modify this comment!",
                 ],404);
             }
             $author = Auth::user();
@@ -183,13 +195,13 @@ class CommentController extends Controller
         if ($request->user()->hasAnyRole(['admin','loader']) || $comment->user->id == $request->user()->id) {
             $comment->delete();
             return response()->json([
-                'status' => 1,
-                'msg' => 'Successfully deleted comment.',
+                'success' => true,
+                'message' => 'Successfully deleted comment.',
             ]);
         }
         return response()->json([
-            "status" => 0,
-            "msg" => "You do not have permission to delete this comment!",
+            "success" => false,
+            "message" => "You do not have permission to delete this comment!",
         ],404);
     }
 }
