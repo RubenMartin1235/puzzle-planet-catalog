@@ -16,6 +16,7 @@
                 action="{{ route('planets.store') }}"
                 class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-3
                 text-gray-900 flex flex-col gap-3"
+                enctype="multipart/form-data"
                 >
                     @csrf
                     <input

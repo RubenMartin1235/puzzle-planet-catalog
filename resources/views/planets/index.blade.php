@@ -17,4 +17,5 @@
            @include('planets.partials.planetlist')
         </div>
     </div>
+    @include('planets.partials.deletemodal')
 </x-app-layout>

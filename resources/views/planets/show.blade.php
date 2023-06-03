@@ -45,6 +45,7 @@
             </div>
         </div>
     </div>
+    @include('planets.partials.deletemodal')
     <script>
         let barconts = document.querySelectorAll(`[id^='block-barcontainer-']`);
         let ceilrate = 0;

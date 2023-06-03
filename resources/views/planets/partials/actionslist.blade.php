@@ -2,5 +2,8 @@
     <a href="{{ route('planets.edit', $pl) }}">
         <x-primary-button>{{ __('Edit') }}</x-primary-button>
     </a>
-    <x-danger-button>{{ __('Delete') }}</x-danger-button>
+    <x-danger-button
+    class="planetDelBtn"
+    data-modal-show="del-popup-modal"
+    data-planet="{{ $pl->id }}">{{ __('Delete') }}</x-danger-button>
 </div>

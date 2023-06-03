@@ -38,10 +38,12 @@ class PlanetController extends Controller
             'bio' => 'required|string|max:128',
             'description' => 'required|string|max:1000',
         ]);
+        $planet = $request->user()->planets()->make();
         $imgpath = $this->resolvePlanetImage($request, $planet);
         $validated['image'] = $imgpath;
-        $planet = $request->user()->planets()->make($validated);
+        $planet->fill($validated);
         $planet->save();
+
         $this->resolvePlanetBlocks($request, $planet);
         return redirect(route('planets.index'));
     }
@@ -100,5 +102,19 @@ class PlanetController extends Controller
             'public'
         ) : null;
         return $path;
+    }
+
+    public function destroy(Request $request, $planet = null)
+    {
+        $pl = $planet ?? Planet::find($request->planet_id);
+        if ($pl === null) {
+            return redirect(route('planets.index'), 404);
+        }
+        //dd($pl);
+        if ($request->user()->hasAnyRole(['admin','loader']) || $pl->user_id == Auth::user()->id) {
+            $pl->delete();
+            return redirect(route('planets.index'));
+        }
+        return redirect(route('planets.index'), 401);
     }
 }

@@ -24,20 +24,20 @@ class UserController extends Controller
 
         if (!isset($user->id)) {
             return response()->json([
-                "status" => 0,
-                "msg" => "User has not been registered yet.",
+                "success" => false,
+                "message" => "User has not been registered yet.",
             ],404);
         }
         if (!Hash::check($request->password, $user->password)) {
             return response()->json([
-                "status" => 0,
-                "msg" => "Incorrect data.",
+                "success" => false,
+                "message" => "Incorrect data.",
             ],404);
         }
         $token = $user->createToken("auth_token")->plainTextToken;
         return response()->json([
-            "status" => 1,
-            "msg" => "Successfully logged in!",
+            "success" => true,
+            "message" => "Successfully logged in!",
             "access_token" => $token,
         ],200);
     }
@@ -46,8 +46,8 @@ class UserController extends Controller
     {
         Auth::user()->tokens()->delete();
         return response()->json([
-            "status" => 1,
-            "msg" => "Successfully logged out.",
+            "success" => true,
+            "message" => "Successfully logged out.",
         ],200);
     }
 
@@ -69,15 +69,15 @@ class UserController extends Controller
         Auth::login($user);
 
         return response()->json([
-            'status' => 1,
-            'msg' => 'Successfully signed up user!'
+            "success" => true,
+            'message' => 'Successfully signed up user!'
         ],200);
     }
 
     public function profile() {
         return response()->json([
-            'status' => 1,
-            'msg' => 'About user',
+            "success" => true,
+            'message' => 'About user',
             'data' => Auth::user()->makeHidden(['email_verified_at']),
         ]);
     }
@@ -89,8 +89,8 @@ class UserController extends Controller
         }
         $request->user()->save();
         return response()->json([
-            'status' => 1,
-            'msg' => 'Successfully updated info!',
+            'success' => true,
+            'message' => 'Successfully updated info!',
         ]);
     }
 
@@ -98,16 +98,16 @@ class UserController extends Controller
         $user = Auth::user();
         if (!Hash::check($request->password, $user->password)) {
             return response()->json([
-                "status" => 0,
-                "msg" => "This action requires your password. Deleting your account is irreversible.",
+                "success" => false,
+                "message" => "This action requires your password. Deleting your account is irreversible.",
             ],404);
         }
         //die(var_dump(!Hash::check($request->password, $user->password)));
         $user->delete();
 
         return response()->json([
-            'status' => 1,
-            'msg' => 'Successfully deleted user.',
+            'success' => true,
+            'message' => 'Successfully deleted user.',
         ]);
     }
 
@@ -115,13 +115,13 @@ class UserController extends Controller
         $user = User::find($id);
         if (!isset($user->id)) {
             return response()->json([
-                "status" => 0,
-                "msg" => "This user does not exist!",
+                "success" => false,
+                "message" => "This user does not exist!",
             ],404);
         }
         return response()->json([
-            'status' => 1,
-            'msg' => 'Found user.',
+            'success' => true,
+            'message' => 'Found user.',
             'data' => $user->makeHidden(['email_verified_at']),
         ]);
     }
@@ -130,8 +130,8 @@ class UserController extends Controller
         $user = User::find($id);
         if (!isset($user->id)) {
             return response()->json([
-                "status" => 0,
-                "msg" => "This user does not exist!",
+                "success" => false,
+                "message" => "This user does not exist!",
             ],404);
         }
         $user->fill($request->validated());
@@ -140,8 +140,8 @@ class UserController extends Controller
         }
         $user->save();
         return response()->json([
-            'status' => 1,
-            'msg' => 'Successfully updated info!',
+            'success' => true,
+            'message' => 'Successfully updated info!',
         ]);
     }
 
@@ -150,21 +150,21 @@ class UserController extends Controller
         $user = User::find($id);
         if (!isset($user->id)) {
             return response()->json([
-                "status" => 0,
-                "msg" => "This user does not exist!",
+                "success" => false,
+                "message" => "This user does not exist!",
             ],404);
         }
         if (!Hash::check($request->password, $admin->password)) {
             return response()->json([
-                "status" => 0,
-                "msg" => "This action requires your password. Deleting an account is an irreversible action.",
+                "success" => false,
+                "message" => "This action requires your password. Deleting an account is an irreversible action.",
             ],404);
         }
         //die(var_dump(!Hash::check($request->password, $user->password)));
         $user->delete();
         return response()->json([
-            'status' => 1,
-            'msg' => 'Successfully deleted user.',
+            'success' => true,
+            'message' => 'Successfully deleted user.',
         ]);
     }
 }

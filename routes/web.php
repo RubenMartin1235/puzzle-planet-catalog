@@ -32,6 +32,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/planets', [PlanetController::class, 'store'])->name('planets.store');
     Route::get('/planets/{planet}/edit', [PlanetController::class, 'edit'])->name('planets.edit');
     Route::put('/planets/{planet}/update', [PlanetController::class, 'update'])->name('planets.update');
+    Route::delete('/planets/{planet}/destroy', [PlanetController::class, 'destroy'])->name('planets.destroy');
+    Route::delete('/planets/destroy', [PlanetController::class, 'destroy'])->name('planets.destroy');
 });
 Route::get('/planets', [PlanetController::class, 'index'])->name('planets.index');
 Route::get('/planets/{planet}', [PlanetController::class, 'show'])->name('planets.show');
