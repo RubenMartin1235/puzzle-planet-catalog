@@ -20,7 +20,9 @@
                         <div class="w-[30%]">
                             @include('planets.partials.planetimg')
                         </div>
-                        <p class="w-[40%] text-lg text-gray-800">{{ $pl->bio }}</p>
+                        <p class="w-[40%] text-lg text-gray-800">
+                            {!! nl2br(e($pl->bio)) !!}
+                        </p>
                         <div class="grow">
                             @foreach ($blocks as $block)
                                 <div class="grow grid gap-4 grid-cols-2
@@ -37,13 +39,19 @@
                             @endforeach
                         </div>
                     </div>
-                    <p class="text-md text-gray-600 p-6">{{ $pl->description }}</p>
+                    <p class="text-md text-left px-6 text-gray-800">
+                        {!! nl2br(e($pl->description)) !!}
+                    </p>
                     @if(Auth::user() == $pl->user)
                         @include('planets.partials.actionslist')
                     @endif
+                    <p class="text-md text-right px-6 text-gray-500">
+                        @include('planets.partials.authortext')
+                    </p>
                 </div>
             </div>
         </div>
+        @include('comments.partials.commentsection')
     </div>
     @include('planets.partials.deletemodal')
     <script>

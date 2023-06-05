@@ -13,8 +13,10 @@ class DashboardController extends Controller
     public function index()
     {
         $planets = Auth::user()->planets()->paginate(15);
+        $comments = Auth::user()->comments()->latest()->paginate(10);
         return view('dashboard',[
             'planets' => $planets,
+            'comments' => $comments,
         ]);
     }
 }

@@ -12,7 +12,15 @@
                     {{ __("You're logged in!") }}
                 </div>
 
-                @include('planets.partials.planetlist')
+                <div class="p-6 text-gray-900">
+                    <h4 class="text-2xl font-bold py-3">{{ __("Your planets") }}</h4>
+                    @include('planets.partials.planetlist')
+                </div>
+                <div class="p-6 text-gray-900">
+                    <h4 class="text-2xl font-bold py-3">{{ __("Your comments") }}</h4>
+                    @include('comments.partials.commentlist')
+                </div>
+
             </div>
         </div>
     </div>

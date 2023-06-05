@@ -18,10 +18,13 @@ class PlanetController extends Controller
     public function show(Request $request, Planet $planet)
     {
         $blocks = $planet->blocks;
+        $comments = $planet->comments()->latest()->paginate(10);
         //dd($blocks);
+        //dd($comments);
         return view('planets.show',[
             'pl' => $planet,
-            'blocks' => $blocks
+            'blocks' => $blocks,
+            'comments' => $comments,
         ]);
     }
     public function create(Request $request)
@@ -65,9 +68,13 @@ class PlanetController extends Controller
             'description' => 'required|string|max:1000',
         ]);
         $imgpath = $this->resolvePlanetImage($request, $planet);
-        $validated['image'] = $imgpath;
-        $planet->update($validated);
-        $this->resolvePlanetBlocks($request, $planet);
+        if ($imgpath !== null) {
+            $validated['image'] = $imgpath;
+        }
+        if ($request->user()->hasAnyRole(['admin','loader']) || $planet->user->id == Auth::user()->id) {
+            $planet->update($validated);
+            $this->resolvePlanetBlocks($request, $planet);
+        }
         return redirect(route('planets.show',$planet));
     }
 

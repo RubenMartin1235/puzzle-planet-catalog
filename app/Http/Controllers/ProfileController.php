@@ -23,8 +23,11 @@ class ProfileController extends Controller
     }
     public function show(Request $request, User $user): View
     {
-        $planets = $user->planets()->paginate(15);
-        return view('profile.show', compact('user','planets'));
+        $planets = $user->planets()->latest()->paginate(15);
+        return view('profile.show', [
+            'user' => $user,
+            'planets' => $planets,
+        ]);
     }
     /**
      * Update the user's profile information.
