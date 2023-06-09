@@ -87,7 +87,7 @@ class User extends Authenticatable
     public function purchases() {
         return $this->hasMany(Purchase::class);
     }
-    public function current_purchase() {
-        return $this->purchases()->latest()->first();
+    public function current_purchases() {
+        return $this->purchases()->latest()->where('status', 'started');
     }
 }

@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Purchase>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\PurchaseItem>
  */
-class PurchaseFactory extends Factory
+class PurchaseItemFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +17,7 @@ class PurchaseFactory extends Factory
     public function definition(): array
     {
         return [
-            'status' => 'started',
+            'amount' => 1,
         ];
     }
 }

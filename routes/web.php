@@ -51,6 +51,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/cards/{card}', [CardController::class, 'show'])->name('cards.show');
     Route::post('/purchases/add/card/{card}', [PurchaseController::class, 'addCard'])->name('purchases.cards.add');
+    Route::delete('/purchases/remove/item/{item}', [PurchaseController::class, 'removeItem'])->name('purchases.items.remove');
 });
 Route::get('/planets', [PlanetController::class, 'index'])->name('planets.index');
 Route::get('/planets/{planet}', [PlanetController::class, 'show'])->name('planets.show');

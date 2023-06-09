@@ -1,4 +1,4 @@
-<div class="grid gap-4 md:grid-cols-5 grid-cols-2">
+<div class="grid gap-4 md:grid-cols-5 grid-cols-2 mb-[20vh]">
     @if ($cards->first())
         @foreach ($cards as $cd)
             @include('cards.partials.cardlistitem')
