@@ -53,7 +53,11 @@ class PurchaseController extends Controller
             'amount' => 'required|integer|min:1',
         ]);
         if ($olditem = $lpurch->items()->where('card_id', $card->id)->first()) {
-            $validated['amount'] += $olditem->amount;
+            $amount_new = min([
+                $validated['amount'] + $olditem->amount,
+                $card->stock
+            ]);
+            $validated['amount'] = $amount_new;
             $olditem->update($validated);
         } else {
             $newitem = PurchaseItem::factory()->make($validated);
@@ -68,6 +72,11 @@ class PurchaseController extends Controller
      * Display the specified resource.
      */
     public function show(Purchase $purchase)
+    {
+        //
+    }
+
+    public function showConfirmation(Purchase $purchase)
     {
         //
     }

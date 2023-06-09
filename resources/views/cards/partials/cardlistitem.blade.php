@@ -18,7 +18,7 @@ class="bg-white overflow-hidden shadow-md sm:rounded-lg p-3 text-gray-900 flex f
             @csrf
             <div class="flex flex-col w-4/6">
                 <label for="amount">{{ __('Quantity:') }}</label>
-                <input type="number" name="amount" value=1 class="">
+                <input type="number" name="amount" value=1 min="1" max="{{ $cd->stock }}" class="">
             </div>
             <x-primary-button class="text-2xl self-end">+</x-primary-button>
         </form>
