@@ -19,12 +19,15 @@ class PlanetController extends Controller
     {
         $blocks = $planet->blocks;
         $comments = $planet->comments()->latest()->paginate(10);
+        $commentable_type = 'planets';
         //dd($blocks);
         //dd($comments);
         return view('planets.show',[
             'pl' => $planet,
             'blocks' => $blocks,
             'comments' => $comments,
+            'commentable' => $planet,
+            'commentable_type' => $commentable_type,
         ]);
     }
     public function create(Request $request)
@@ -41,7 +44,7 @@ class PlanetController extends Controller
             'bio' => 'required|string|max:128',
             'description' => 'required|string|max:1000',
         ]);
-        $planet = $request->user()->planets()->make();
+        $planet = $request->user()->planets()->create($validated);
         $imgpath = $this->resolvePlanetImage($request, $planet);
         $validated['image'] = $imgpath;
         $planet->fill($validated);

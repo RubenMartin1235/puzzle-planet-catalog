@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Planet;
 use App\Models\Comment;
+use App\Models\Card;
 
 class CommentController extends Controller
 {
@@ -14,11 +15,28 @@ class CommentController extends Controller
         'message'=>'required|string|max:255',
     ];
 
+    protected function create(Request $request, $commentable, array $viewdata) {
+        $commentable_type = $commentable->getTable();
+        $viewdata['commentable'] = $commentable;
+        $viewdata['commentable_type'] = $commentable_type;
+        //dd($commentable_type);
+        return view('comments.create',$viewdata);
+    }
     public function createOnPlanet(Request $request, Planet $planet)
     {
-        return view('comments.create',[
+        $vdata = [
             'pl' => $planet,
-        ]);
+            'listitem_vname' => 'planets.partials.planetlistitem',
+        ];
+        return $this->create($request, $planet, $vdata);
+    }
+    public function createOnCard(Request $request, Card $card)
+    {
+        $vdata = [
+            'cd' => $card,
+            'listitem_vname' => 'cards.partials.cardlistitem',
+        ];
+        return $this->create($request, $card, $vdata);
     }
 
     protected function store(Request $request, $commentable) {
@@ -32,6 +50,11 @@ class CommentController extends Controller
     {
         $this->store($request, $planet);
         return redirect(route('planets.show', $planet));
+    }
+    public function storeOnCard(Request $request, Card $card)
+    {
+        $this->store($request, $card);
+        return redirect(route('cards.show', $card));
     }
 
 
@@ -49,11 +72,13 @@ class CommentController extends Controller
             case Planet::class:
                 $data['pl'] = $commentable;
                 $data['breadcrumbs_lvl1'] = "Planets";
+                $data['listitem_vname'] = 'planets.partials.planetlistitem';
                 break;
 
-            default:
-                $data['card'] = $commentable;
+            case Card::class:
+                $data['cd'] = $commentable;
                 $data['breadcrumbs_lvl1'] = "Cards";
+                $data['listitem_vname'] = 'cards.partials.cardlistitem';
                 break;
         }
         $data['commentable_route'] = route(strtolower($data['breadcrumbs_lvl1']).'.show', $commentable);

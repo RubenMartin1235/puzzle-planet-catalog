@@ -4,6 +4,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PlanetController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\CardController;
+use App\Http\Controllers\PurchaseController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,12 +41,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/planets/{planet}/comment', [CommentController::class, 'createOnPlanet'])->name('planets.comments.create');
     Route::post('/planets/{planet}/store', [CommentController::class, 'storeOnPlanet'])->name('planets.comments.store');
+    Route::get('/cards/{card}/comment', [CommentController::class, 'createOnCard'])->name('cards.comments.create');
+    Route::post('/cards/{card}/store', [CommentController::class, 'storeOnCard'])->name('cards.comments.store');
+
     Route::get('/comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
     Route::put('/comments/{comment}/update', [CommentController::class, 'update'])->name('comments.update');
     Route::delete('/comments/{comment}/destroy', [CommentController::class, 'destroy'])->name('comments.destroy');
     Route::delete('/comments/destroy', [CommentController::class, 'destroy'])->name('comments.destroy');
+
+    Route::get('/cards/{card}', [CardController::class, 'show'])->name('cards.show');
+    Route::post('/purchases/add/card/{card}', [PurchaseController::class, 'addCard'])->name('purchases.cards.add');
 });
 Route::get('/planets', [PlanetController::class, 'index'])->name('planets.index');
 Route::get('/planets/{planet}', [PlanetController::class, 'show'])->name('planets.show');
+Route::get('/cards', [CardController::class, 'index'])->name('cards.index');
 
 require __DIR__.'/auth.php';

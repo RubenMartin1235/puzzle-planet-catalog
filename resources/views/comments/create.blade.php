@@ -1,12 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            <a href="{{ route('planets.index') }}"
+            <a href="{{ route($commentable_type.'.index') }}"
             class="text-gray-500"
-            >{{ __('Planets') }}</a>
-            / <a href="{{ route('planets.show', $pl) }}"
+            >{{ __(Str::ucfirst($commentable_type)) }}</a>
+            / <a href="{{ route($commentable_type.'.show', $commentable) }}"
             class="text-gray-500"
-            >{{ $pl->name }}</a>
+            >{{ $commentable->name }}</a>
             / {{ __('Post comment') }}
         </h2>
     </x-slot>
@@ -14,10 +14,10 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="flex flex-col">
-                @include('planets.partials.planetlistitem')
+                @include($listitem_vname)
                 <form
                 method="POST"
-                action="{{ route('planets.comments.store', $pl) }}"
+                action="{{ route($commentable_type.'.comments.store', $commentable) }}"
                 class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-3
                 text-gray-900 flex flex-col gap-3"
                 >

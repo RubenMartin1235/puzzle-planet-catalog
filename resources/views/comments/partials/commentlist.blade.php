@@ -18,15 +18,17 @@
                         </span>
                     </div>
                     <div class="flex flex-row justify-left gap-2">
-                        @if (Auth::user()->id == $cm->user->id)
-                            <a href="{{ route('comments.edit', $cm) }}">
-                                <x-primary-button>{{ __('Edit') }}</x-primary-button>
-                            </a>
-                            <x-danger-button
-                            class="commentDelBtn"
-                            data-modal-show="del-cm-popup-modal"
-                            data-comment="{{ $cm->id }}">{{ __('Delete') }}</x-danger-button>
-                        @endif
+                        @auth
+                            @if (Auth::user()->id == $cm->user->id)
+                                <a href="{{ route('comments.edit', $cm) }}">
+                                    <x-primary-button>{{ __('Edit') }}</x-primary-button>
+                                </a>
+                                <x-danger-button
+                                class="commentDelBtn"
+                                data-modal-show="del-cm-popup-modal"
+                                data-comment="{{ $cm->id }}">{{ __('Delete') }}</x-danger-button>
+                            @endif
+                        @endauth
                     </div>
                 </div>
                 <p class="text-md">

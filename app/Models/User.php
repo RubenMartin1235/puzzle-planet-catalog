@@ -83,4 +83,11 @@ class User extends Authenticatable
         }
         return false;
     }
+
+    public function purchases() {
+        return $this->hasMany(Purchase::class);
+    }
+    public function current_purchase() {
+        return $this->purchases()->latest()->first();
+    }
 }

@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             PlanetSeeder::class,
             CommentSeeder::class,
             RatingSeeder::class,
+            CardSeeder::class,
         ]);
     }
 }

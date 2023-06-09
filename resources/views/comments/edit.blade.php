@@ -14,9 +14,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="flex flex-col">
-                @if ($pl)
-                    @include('planets.partials.planetlistitem')
-                @endif
+                @include($listitem_vname)
                 <form
                 method="POST"
                 action="{{ route('comments.update', $cm) }}"

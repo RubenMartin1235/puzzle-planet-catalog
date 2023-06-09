@@ -71,7 +71,8 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
-        //public_path('storage/planets') => storage_path('app/planets'),
+        public_path('storage/planets') => storage_path('app/planets'),
+        public_path('storage/cards') => storage_path('app/cards'),
     ],
 
 ];

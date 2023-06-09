@@ -7,7 +7,7 @@
             >
             <div class="flex flex-row gap-3">
                 <h4 class="text-3xl font-bold text-left">{{ __('Comments') }}</h4>
-                <a href="{{ route('planets.comments.create', $pl) }}">
+                <a href="{{ route($commentable_type.'.comments.create', $commentable) }}">
                     <x-primary-button>{{ __('Comment') }}</x-primary-button>
                 </a>
             </div>

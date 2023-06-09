@@ -20,6 +20,9 @@
                     <x-nav-link :href="route('planets.index')">
                         {{ __('Planets') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('cards.index')">
+                        {{ __('Cards') }}
+                    </x-nav-link>
                 </div>
             </div>
 
