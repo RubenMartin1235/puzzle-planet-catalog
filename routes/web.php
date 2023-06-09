@@ -50,8 +50,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/comments/destroy', [CommentController::class, 'destroy'])->name('comments.destroy');
 
     Route::get('/cards/{card}', [CardController::class, 'show'])->name('cards.show');
+
     Route::post('/purchases/add/card/{card}', [PurchaseController::class, 'addCard'])->name('purchases.cards.add');
     Route::delete('/purchases/remove/item/{item}', [PurchaseController::class, 'removeItem'])->name('purchases.items.remove');
+    Route::get('/purchases/confirm', [PurchaseController::class, 'showConfirmation'])->name('purchases.confirm.show');
+    Route::post('/purchases/confirm', [PurchaseController::class, 'confirm'])->name('purchases.confirm');
 });
 Route::get('/planets', [PlanetController::class, 'index'])->name('planets.index');
 Route::get('/planets/{planet}', [PlanetController::class, 'show'])->name('planets.show');

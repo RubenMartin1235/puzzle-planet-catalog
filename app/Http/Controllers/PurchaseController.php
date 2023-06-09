@@ -78,7 +78,17 @@ class PurchaseController extends Controller
 
     public function showConfirmation(Purchase $purchase)
     {
-        //
+        $currentpurchase = $this->getLastPurchase();
+        $items = $currentpurchase->items;
+        $total_price = 0;
+        foreach ($items as $item) {
+            $total_price += $item->card->price * $item->amount;
+        }
+        //dd($currentpurchase);
+        return view('purchases.confirm', [
+            'currentpurchase' => $currentpurchase,
+            'total_price' => $total_price,
+        ]);
     }
 
     /**

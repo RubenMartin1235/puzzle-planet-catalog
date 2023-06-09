@@ -33,7 +33,7 @@
                     </div>
                 @endforeach
             </div>
-            <a href=""
+            <a href="{{ route('purchases.confirm.show') }}"
             class="w-1/6 items-center justify-center inline-flex
             px-4 py-2 bg-gray-800 border border-transparent
             rounded-md font-semibold text-xl text-white uppercase
