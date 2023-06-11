@@ -25,4 +25,8 @@ class Card extends Model
     public function purchases() {
         return $this->hasManyThrough(Purchase::class, PurchaseItem::class);
     }
+
+    public function collected_by_users() {
+        return $this->belongsToMany(User::class, 'user_collects_card');
+    }
 }

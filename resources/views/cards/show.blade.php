@@ -8,7 +8,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-12 mb-[20vh]">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="flex flex-col">
                 <div
@@ -20,10 +20,11 @@
                         <div class="md:w-2/6 w-full">
                             @include('cards.partials.cardimg')
                         </div>
-                        <div class="grow">
-                            <p class="text-md text-left px-6 text-gray-800">
+                        <div class="grow flex flex-col">
+                            <p class="text-lg text-left px-6 text-gray-800">
                                 {!! nl2br(e($cd->description)) !!}
                             </p>
+                            @include('cards.partials.cardaddform')
                         </div>
                     </div>
                 </div>
@@ -31,4 +32,5 @@
         </div>
         @include('comments.partials.commentsection')
     </div>
+    @include('purchases.partials.purchasecartfooter')
 </x-app-layout>

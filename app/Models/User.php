@@ -90,4 +90,8 @@ class User extends Authenticatable
     public function current_purchases() {
         return $this->purchases()->latest()->where('status', 'started');
     }
+
+    public function cards_collected() {
+        return $this->belongsToMany(Card::class, 'user_collects_card');
+    }
 }

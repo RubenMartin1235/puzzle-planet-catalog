@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Card;
 
 class CardSeeder extends Seeder
@@ -13,6 +14,7 @@ class CardSeeder extends Seeder
      */
     public function run(): void
     {
+
         $card = Card::factory()->create([
             'name'=>'Last Stairway',
             'image'=>'cards/1.png',
@@ -20,6 +22,7 @@ class CardSeeder extends Seeder
             'price'=>2.99,
             'stock'=>12,
         ]);
+        Storage::copy('resources/assets/cards/1.png', 'storage/cards/1.png');
         $card = Card::factory()->create([
             'name'=>'Ozzeans',
             'image'=>'cards/2.png',
@@ -27,5 +30,6 @@ class CardSeeder extends Seeder
             'price'=>1.99,
             'stock'=>9,
         ]);
+        Storage::copy('resources/assets/cards/2.png', 'storage/cards/2.png');
     }
 }
