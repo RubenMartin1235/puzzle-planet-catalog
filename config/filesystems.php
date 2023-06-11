@@ -44,6 +44,11 @@ return [
             'throw' => false,
         ],
 
+        'resources_cards' => [
+            'driver' => 'local',
+            'root' => resource_path('assets/cards'),
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
