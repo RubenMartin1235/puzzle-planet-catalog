@@ -2,6 +2,15 @@
     @if ($comments->first())
         @foreach ($comments as $cm)
             <div class="flex flex-col p-3 shadow-md">
+                @if (!Str::endsWith(Route::currentRouteName(), 'show') )
+                    @php($commentable_table = $cm->commentable->getTable())
+                    <p class="text-gray-600 pb-2">
+                        {{ __('(Commented on ') . Str::singular($commentable_table) . ' '}}
+                        <a href="{{ route($commentable_table . '.show', $cm->commentable) }}"
+                            class="text-gray-900 underline">{{ $cm->commentable->name }}</a>{{ ')' }}
+                    </p>
+
+                @endif
                 <div class="flex flex-row gap-3 justify-between">
                     <div class="flex flex-row gap-3">
                         <a href="{{ route('profile.show', $cm->user) }}" class="font-bold text-md">

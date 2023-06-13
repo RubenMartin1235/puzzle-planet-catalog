@@ -38,4 +38,10 @@ class DashboardController extends Controller
             'comments' => $comments,
         ]);
     }
+    public function cards() {
+        $cards = Auth::user()->cards_collected()->latest()->paginate(15);
+        return view('dashboard.cards',[
+            'cards' => $cards,
+        ]);
+    }
 }

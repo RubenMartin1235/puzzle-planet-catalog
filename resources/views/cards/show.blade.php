@@ -32,5 +32,6 @@
         </div>
         @include('comments.partials.commentsection')
     </div>
+    @include('planets.partials.deletemodal')
     @include('purchases.partials.purchasecartfooter')
 </x-app-layout>

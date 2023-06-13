@@ -18,5 +18,4 @@
             </div>
         </div>
     </div>
-    <p>{{ var_dump(Route::current())  }}</p>
 </x-app-layout>
