@@ -92,6 +92,6 @@ class User extends Authenticatable
     }
 
     public function cards_collected() {
-        return $this->belongsToMany(Card::class, 'user_collects_card');
+        return $this->belongsToMany(Card::class, 'user_collects_card')->withPivot('amount');
     }
 }

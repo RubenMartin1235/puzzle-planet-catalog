@@ -11,7 +11,7 @@
                         $cd = $item->card;
                     @endphp
                     <div
-                    class="w-[12%] bg-white shadow-md sm:rounded-lg p-2 text-gray-900 flex flex-row justify-center items-center gap-1">
+                    class="w-[12%] bg-white shadow-md sm:rounded-lg p-2 text-gray-900 flex flex-row justify-center items-center gap-1 overflow-hidden">
                         <a class="flex flex-col items-center w-[30%]"
                         href="{{ route('cards.show', $cd) }}">
                             <div class="flex flex-row items-center justify-center ">
@@ -22,8 +22,8 @@
                         class="flex flex-col self-center items-center justify-between">
                             @csrf
                             @method('DELETE')
-                            <div class="text-center w-full">
-                                <h4 class="text-xl font-bold">{{ $cd->name }}</h4>
+                            <div class="text-center w-full overflow-hidden">
+                                <h4 class="text-xl font-bold text-ellipsis overflow-hidden">{{ $cd->name }}</h4>
                             </div>
                             <div class="flex flex-row gap-2 justify-between">
                                 <h6 class="text-lg font-medium text-gray-700">{{ 'x'.$item->amount }}</h6>

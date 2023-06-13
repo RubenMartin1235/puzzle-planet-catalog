@@ -36,6 +36,14 @@ class PurchaseController extends Controller
         $purchase->save();
         return $purchase;
     }
+    protected function getTotalPrice(Purchase $purchase){
+        $items = $purchase->items;
+        $total_price = 0;
+        foreach ($items as $item) {
+            $total_price += $item->card->price * $item->amount;
+        }
+        return $total_price;
+    }
     /**
      * Store a newly created resource in storage.
      */
@@ -76,19 +84,35 @@ class PurchaseController extends Controller
         //
     }
 
-    public function showConfirmation(Purchase $purchase)
+    public function showConfirmation()
     {
         $currentpurchase = $this->getLastPurchase();
-        $items = $currentpurchase->items;
-        $total_price = 0;
-        foreach ($items as $item) {
-            $total_price += $item->card->price * $item->amount;
-        }
+        $total_price = $this->getTotalPrice($currentpurchase);
         //dd($currentpurchase);
         return view('purchases.confirm', [
             'currentpurchase' => $currentpurchase,
             'total_price' => $total_price,
         ]);
+    }
+    public function confirm(Request $request){
+        $purchase = $this->getLastPurchase();
+        $final_price = $this->getTotalPrice($purchase);
+        $balance = Auth::user()->balance;
+        if ($balance < $final_price) {
+            return redirect(route('purchases.confirm.show'))
+                ->withErrors([
+                    'message' => "You don't have enough money!"
+                ]);
+        }
+
+        $new_purchase_data = [
+            'status' => 'finished',
+            'final_price' => $final_price,
+        ];
+        $purchase->update($newdata);
+
+        Auth::user()->balance = $balance - $final_price;
+        return redirect(route('cards.index'));
     }
 
     /**

@@ -8,9 +8,7 @@ class="bg-white overflow-hidden shadow-md sm:rounded-lg p-3 text-gray-900 flex f
             </div>
             <div class="text-center w-full">
                 <h4 class="text-xl font-bold">{{ $cd->name }}</h4>
-                <!--<p class="text-sm text-gray-700">
-                    {!! nl2br(e($cd->description)) !!}
-                </p>-->
+                <p class="text-right text-3xl font-bold">{{ $cd->price . ' €' }}</p>
             </div>
         </a>
         @include('cards.partials.cardaddform')

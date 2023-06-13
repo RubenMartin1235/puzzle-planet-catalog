@@ -31,6 +31,9 @@ Route::middleware('auth')->group(function () {
 });
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/planets', [DashboardController::class, 'planets'])->name('dashboard.planets');
+    Route::get('/dashboard/cards', [DashboardController::class, 'cards'])->name('dashboard.cards');
+    Route::get('/dashboard/comments', [DashboardController::class, 'comments'])->name('dashboard.comments');
 
     Route::get('/planets/create', [PlanetController::class, 'create'])->name('planets.create');
     Route::post('/planets', [PlanetController::class, 'store'])->name('planets.store');

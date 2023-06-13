@@ -41,10 +41,11 @@
         <form action="" method="POST" class="w-full flex flex-col justify-center items-center mb-3">
             <p class="text-xl">{{ __('Total price:') }}</p>
             <h3 class="font-black text-5xl">{{ $total_price . ' €'}}</h3>
+            <x-input-error :messages="$errors->get('message')" class="mt-2 text-lg" />
         </form>
-        <form action="" method="POST" class="w-full flex flex-row justify-center">
+        <form action="{{ route('purchases.confirm') }}" method="POST" class="w-full flex flex-row justify-center">
             @csrf
-            <a href="{{ route('purchases.confirm.show') }}"
+            <button
             class="w-1/6 items-center justify-center inline-flex
             px-4 py-2 bg-gray-800 border border-transparent
             rounded-md font-semibold text-xl text-white uppercase
@@ -53,7 +54,7 @@
             focus:ring-indigo-500 focus:ring-offset-2
             transition ease-in-out duration-150">
                 {{ __('Purchase') }}
-            </a>
+            </button>
         </form>
     </div>
 </x-app-layout>

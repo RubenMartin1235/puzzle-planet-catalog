@@ -27,6 +27,6 @@ class Card extends Model
     }
 
     public function collected_by_users() {
-        return $this->belongsToMany(User::class, 'user_collects_card');
+        return $this->belongsToMany(User::class, 'user_collects_card')->withPivot('amount');
     }
 }
