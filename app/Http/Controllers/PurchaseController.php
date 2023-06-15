@@ -88,10 +88,14 @@ class PurchaseController extends Controller
     {
         $currentpurchase = $this->getLastPurchase();
         $total_price = $this->getTotalPrice($currentpurchase);
+        $current_balance = Auth::user()->balance;
+        $final_balance = $current_balance - $total_price;
         //dd($currentpurchase);
         return view('purchases.confirm', [
             'currentpurchase' => $currentpurchase,
             'total_price' => $total_price,
+            'current_balance' => $current_balance,
+            'final_balance' => $final_balance,
         ]);
     }
     public function confirm(Request $request){
@@ -104,15 +108,34 @@ class PurchaseController extends Controller
                     'message' => "You don't have enough money!"
                 ]);
         }
+        //dd($purchase->items);
+        $items = $purchase->items;
+        foreach ($items as $item) {
+            $card = $item->card;
+            $pivotdata;
+            $user_had_cards_amount = Auth::user()->cards_collected()->find($card->id)->pivot->amount;
+            if (Auth::user()->hasCard($card->name)) {
+                $pivotdata = ['amount' => ($item->amount + $user_had_cards_amount)];
+                Auth::user()->cards_collected()->updateExistingPivot($card->id, $pivotdata);
+            } else {
+                $pivotdata = ['amount' => $item->amount];
+                Auth::user()->cards_collected()->attach($card, $pivotdata);
+            }
+            $card->stock -= $item->amount;
+            $card->save();
+        }
 
         $new_purchase_data = [
             'status' => 'finished',
             'final_price' => $final_price,
         ];
-        $purchase->update($newdata);
+        $purchase->update($new_purchase_data);
 
         Auth::user()->balance = $balance - $final_price;
-        return redirect(route('cards.index'));
+        Auth::user()->save();
+        //Auth::user()->cards()->attach();
+        return redirect(route('cards.index'))
+            ->with('purchase_result','The purchase was successful!');
     }
 
     /**

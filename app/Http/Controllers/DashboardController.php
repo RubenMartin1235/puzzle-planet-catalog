@@ -44,4 +44,20 @@ class DashboardController extends Controller
             'cards' => $cards,
         ]);
     }
+
+    public function topup() {
+        return view('dashboard.topup',[
+            'balance' => Auth::user()->balance,
+        ]);
+    }
+    public function topupAction(Request $request) {
+        $validated = $request->validate([
+            'topup' => 'required|numeric|min:0|max:1000',
+            'ccc' => 'required|string',
+        ]);
+        $new_balance = Auth::user()->balance + $validated['topup'];
+        Auth::user()->balance = $new_balance;
+        Auth::user()->save();
+        return redirect(route('dashboard.topup'));
+    }
 }

@@ -94,4 +94,11 @@ class User extends Authenticatable
     public function cards_collected() {
         return $this->belongsToMany(Card::class, 'user_collects_card')->withPivot('amount');
     }
+
+    public function hasCard($card) {
+        if ($this->cards_collected()->where('name', $card)->first()) {
+            return true;
+        }
+        return false;
+    }
 }

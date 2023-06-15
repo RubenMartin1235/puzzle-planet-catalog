@@ -9,6 +9,10 @@ class Purchase extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'status'
+    ];
+
     public function items() {
         return $this->hasMany(PurchaseItem::class);
     }

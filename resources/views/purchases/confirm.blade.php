@@ -38,11 +38,29 @@
                 </div>
             @endforeach
         </div>
-        <form action="" method="POST" class="w-full flex flex-col justify-center items-center mb-3">
-            <p class="text-xl">{{ __('Total price:') }}</p>
-            <h3 class="font-black text-5xl">{{ $total_price . ' €'}}</h3>
-            <x-input-error :messages="$errors->get('message')" class="mt-2 text-lg" />
-        </form>
+        <div class="w-7xl flex flex-row justify-around">
+            <div class="w-full grid grid-flow-col grid-cols-5 grid-rows-3 text-gray-600 mb-3 items-center justify-center">
+                <p class="text-xl">{{ __('Your current balance:') }}</p>
+                <h3 class="font-bold text-5xl row-span-2">{{ $current_balance . ' €'}}</h3>
+
+                <br>
+                <p class="text-5xl row-span-2 text-center">-</p>
+
+                <p class="text-xl text-gray-900">{{ __('Total price of purchase:') }}</p>
+                <h3 class="font-black text-5xl row-span-2 text-gray-900">
+                    <p class="underline">{{ $total_price . ' €'}}</p>
+                    <x-input-error :messages="$errors->get('message')" class="mt-2 text-lg" />
+                </h3>
+
+                <br>
+                <p class="text-5xl row-span-2 text-center">&equals;</p>
+
+                <p class="text-xl">{{ __('Your final balance:') }}</p>
+                <h3 class="font-bold text-5xl row-span-2 {{ ($final_balance < 0) ? "text-red-500" : '' }}">
+                    {{ $final_balance . ' €'}}
+                </h3>
+            </div>
+        </div>
         <form action="{{ route('purchases.confirm') }}" method="POST" class="w-full flex flex-row justify-center">
             @csrf
             <button
@@ -53,7 +71,7 @@
             active:bg-gray-900 focus:outline-none focus:ring-2
             focus:ring-indigo-500 focus:ring-offset-2
             transition ease-in-out duration-150">
-                {{ __('Purchase') }}
+                {{ __('Confirm purchase') }}
             </button>
         </form>
     </div>

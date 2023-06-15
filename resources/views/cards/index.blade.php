@@ -7,7 +7,12 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-           @include('cards.partials.cardlist')
+            @if(session('purchase_result'))
+                <p class="alert alert-success">
+                    {{ session('purchase_result') }}
+                </p>
+            @endif
+            @include('cards.partials.cardlist')
         </div>
     </div>
     @include('purchases.partials.purchasecartfooter')

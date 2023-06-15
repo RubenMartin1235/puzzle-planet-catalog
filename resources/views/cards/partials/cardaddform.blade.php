@@ -10,7 +10,7 @@
     </form>
     <p class="text-gray-500 text-sm text-right">{{ __('Left in stock: ') . $cd->stock }}</p>
     @php
-        $duhc = $cd->collected_by_users->where('user_id', Auth::user()->id)->first();
+        $duhc = $cd->collected_by_users()->where('user_id', Auth::user()->id)->first();
         $amount_collected = isset($duhc) ? $duhc->pivot->amount : 0;
     @endphp
     <p class="text-{{ $amount_collected > 0 ? 'green' : 'gray'}}-800 text-sm text-right">
