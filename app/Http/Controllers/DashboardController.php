@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Planet;
 use App\Models\Role;
 use App\Models\Block;
+use App\Models\User;
+use App\Models\Comment;
+use App\Models\Card;
 
 class DashboardController extends Controller
 {
@@ -43,6 +46,39 @@ class DashboardController extends Controller
         return view('dashboard.cards',[
             'cards' => $cards,
         ]);
+    }
+
+    public function users() {
+        $users = User::latest()->paginate(15);
+        return view('dashboard.users',[
+            'users' => $users,
+        ]);
+    }
+    public function userDelete(Request $request, User $user) {
+        return view('dashboard.users.delete',[
+            'user' => $user,
+        ]);
+    }
+    public function userDestroy(Request $request, User $user) {
+        $user->delete();
+        return redirect(route('dashboard.users'));
+    }
+
+    public function userEdit(Request $request, User $user) {
+        return view('dashboard.users.edit',[
+            'user' => $user,
+        ]);
+    }
+    public function userUpdate(Request $request, User $user) {
+        $user->save();
+        $validated=$request->validate([
+            'name'=>'required|string|max:255',
+            'email'=>'required|string|max:255',
+            'balance'=>'required|numeric|min:0',
+        ]);
+        $user->update($validated);
+
+        return redirect(route('dashboard.users'));
     }
 
     public function topup() {
