@@ -61,7 +61,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/purchases/confirm', [PurchaseController::class, 'showConfirmation'])->name('purchases.confirm.show');
     Route::post('/purchases/confirm', [PurchaseController::class, 'confirm'])->name('purchases.confirm');
 });
-Route::middleware(['auth', 'role:admin'])->group(function () {
+
+Route::group(['middleware' => ['auth', 'role:loader,admin']], function () {
+    Route::get('/cards/create', [CardController::class, 'create'])->name('cards.create');
+    Route::get('/cards/{card}/edit', [CardController::class, 'edit'])->name('cards.edit');
+    Route::patch('/cards/{card}/restock', [CardController::class, 'restock'])->name('cards.restock');
+    Route::delete('/cards/{card}/destroy', [CardController::class, 'destroy'])->name('cards.destroy');
+    Route::delete('/cards/destroy', [CardController::class, 'destroy'])->name('cards.destroy');
+});
+
+Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::get('/dashboard/users', [DashboardController::class, 'users'])->name('dashboard.users');
     Route::get('/dashboard/users/edit/{user}', [DashboardController::class, 'userEdit'])->name('dashboard.users.edit');
     Route::patch('/dashboard/users/update/{user}', [DashboardController::class, 'userUpdate'])->name('dashboard.users.update');

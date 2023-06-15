@@ -28,7 +28,7 @@
                     </div>
                     <div class="flex flex-row justify-left gap-2">
                         @auth
-                            @if (Auth::user()->id == $cm->user->id)
+                            @if (Auth::user()->id == $cm->user->id || Auth::user()->hasAnyRole(['admin']))
                                 <a href="{{ route('comments.edit', $cm) }}">
                                     <x-primary-button>{{ __('Edit') }}</x-primary-button>
                                 </a>

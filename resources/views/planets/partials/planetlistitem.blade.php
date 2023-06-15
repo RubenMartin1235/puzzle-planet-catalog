@@ -12,7 +12,7 @@ class="bg-white overflow-hidden shadow-md sm:rounded-lg p-3 text-gray-900 flex f
             </div>
         </a>
         <div class="w-full flex flex-row justify-between gap-3">
-            @if(Auth::user() == $pl->user)
+            @if(Auth::user() == $pl->user || Auth::user()->hasAnyRole(['loader','admin']))
                 @include('planets.partials.actionslist')
             @endif
             <div class="grow text-xs text-gray-500 self-end text-right">

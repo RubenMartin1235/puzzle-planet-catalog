@@ -12,5 +12,6 @@ class="bg-white overflow-hidden shadow-md sm:rounded-lg p-3 text-gray-900 flex f
             </div>
         </a>
         @include('cards.partials.cardaddform')
+        @include('cards.partials.actionslist')
     </div>
 </div>

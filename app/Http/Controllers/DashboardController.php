@@ -50,7 +50,7 @@ class DashboardController extends Controller
 
     public function users() {
         $users = User::latest()->paginate(15);
-        return view('dashboard.users',[
+        return view('dashboard.users.index',[
             'users' => $users,
         ]);
     }
@@ -77,7 +77,15 @@ class DashboardController extends Controller
             'balance'=>'required|numeric|min:0',
         ]);
         $user->update($validated);
-
+        $roles = explode(',',$request->input('roles'));
+        $new_role_ids = [];
+        foreach ($roles as $rolename) {
+            $role = Role::where('name', $rolename)->first();
+            if ($role) {
+                $new_role_ids[] = $role->id;
+            }
+        }
+        $user->roles()->sync($new_role_ids);
         return redirect(route('dashboard.users'));
     }
 

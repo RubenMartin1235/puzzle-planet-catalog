@@ -6,5 +6,14 @@
     @else
         <p class="text-lg">{{ __('There are no cards here!') }}</p>
     @endif
+    @auth
+        @if (Auth::user()->hasAnyRole(['admin','loader']))
+            <a href="{{ route('cards.create') }}" class="w-full text-center flex flex-row">
+                <x-primary-button class="w-full !text-9xl flex flex-row justify-center">
+                    <p class="text-center">+</p>
+                </x-primary-button>
+            </a>
+        @endif
+    @endauth
 </div>
 {{ $cards->links() }}

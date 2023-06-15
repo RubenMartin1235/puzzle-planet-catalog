@@ -15,5 +15,6 @@
             @include('cards.partials.cardlist')
         </div>
     </div>
+    @include('cards.partials.delmodal')
     @include('purchases.partials.purchasecartfooter')
 </x-app-layout>

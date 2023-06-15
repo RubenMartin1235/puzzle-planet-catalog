@@ -19,9 +19,9 @@ class CardController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        return view('cards.show', Card::find(1));
     }
 
     /**
@@ -66,10 +66,24 @@ class CardController extends Controller
     }
 
     /**
+     * Update the specified resource in storage.
+     */
+    public function restock(Request $request, Card $card)
+    {
+        $validated = $request->validate([
+            'stock' => 'required|integer|min:1',
+        ]);
+        $card->update($validated);
+        return redirect(route('cards.show', $card));
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Card $card)
+    public function destroy(Request $request, Card $card = null)
     {
-        //
+        $cd = $card ?? Card::find($request->input('card_id'));
+        $cd->delete();
+        return redirect(url()->previous());
     }
 }

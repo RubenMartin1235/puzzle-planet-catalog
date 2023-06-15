@@ -53,6 +53,12 @@
             <x-input-error class="mt-2" :messages="$errors->get('balance')" />
         </div>
 
+        <div>
+            <x-input-label for="roles" :value="__('roles')" />
+            <x-text-input id="roles" name="roles" type="text" class="mt-1 block w-full" :value="old('roles', implode(',', $user->roles()->pluck('name')->toArray()))" required autofocus autocomplete="name" />
+            <x-input-error class="mt-2" :messages="$errors->get('roles')" />
+        </div>
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 
