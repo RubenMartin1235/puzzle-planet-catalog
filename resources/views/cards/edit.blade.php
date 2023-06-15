@@ -13,12 +13,13 @@
             <div class="flex flex-col">
                 <form
                 method="POST"
-                action="{{ route('cards.store') }}"
+                action="{{ route('cards.update', $cd) }}"
                 class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-3
                 text-gray-900 flex flex-col gap-3"
                 enctype="multipart/form-data"
                 >
                     @csrf
+                    @method('PUT')
                     <x-input-error :messages="$errors->get('message')" class="mt-2" />
                     <input
                         name="name"
@@ -26,6 +27,7 @@
                         placeholder="{{ __('Enter card name here') }}"
                         maxlength="40"
                         class="block w-full text-3xl font-bold text-center border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mb-2"
+                        value="{{ old('name',$cd->name) }}"
                     >
                     <div class="flex md:flex-row flex-col gap-6 p-6">
                         <div class="md:w-2/6 w-full">
@@ -42,6 +44,7 @@
                                     max="999.99"
                                     step="0.01"
                                     class="block w-full text-2xl font-bold border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mb-2"
+                                    value="{{ old('price',$cd->price) }}"
                                 >
                                 <input
                                     name="stock"
@@ -49,6 +52,7 @@
                                     placeholder="{{ __('Initial stock') }}"
                                     min="1"
                                     class="block w-full text-2xl font-bold border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mb-2"
+                                    value="{{ old('stock',$cd->stock) }}"
                                 >
                             </div>
                             <textarea
@@ -56,10 +60,10 @@
                                 maxlength="1000" required
                                 placeholder="{{ __('Enter a description for this card') }}"
                                 class="block w-full grow text-md text-gray-800 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
-                            >{{ old('description') }}</textarea>
+                            >{{ old('description',$cd->description) }}</textarea>
                         </div>
                     </div>
-                    <x-primary-button class="mt-4 !text-2xl">{{ __('Create card') }}</x-primary-button>
+                    <x-primary-button class="mt-4 !text-2xl">{{ __('Edit card') }}</x-primary-button>
                 </form>
             </div>
         </div>

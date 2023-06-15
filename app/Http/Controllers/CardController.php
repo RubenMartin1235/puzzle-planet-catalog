@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class CardController extends Controller
 {
+    protected static $validationRules = [
+        'name' => 'required|string|max:40',
+        'price' => 'required|numeric|min:0.49|max:999.99',
+        'stock' => 'required|integer|min:1',
+        'description' => 'required|string|max:1000',
+    ];
     /**
      * Display a listing of the resource.
      */
@@ -19,9 +25,9 @@ class CardController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
+    public function create()
     {
-        return view('cards.show', Card::find(1));
+        return view('cards.create');
     }
 
     /**
@@ -29,7 +35,13 @@ class CardController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate(self::$validationRules);
+        $card = Card::factory()->create($validated);
+        $imgpath = $this->resolvePlanetImage($request, $card);
+        $validated['image'] = $imgpath;
+        $card->fill($validated);
+        $card->save();
+        return redirect(route('cards.show',$card));
     }
 
     /**
@@ -52,9 +64,11 @@ class CardController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Card $card)
+    public function edit(Request $request, Card $card)
     {
-        //
+        return view('cards.edit', [
+            'cd' => $card,
+        ]);
     }
 
     /**
@@ -62,7 +76,13 @@ class CardController extends Controller
      */
     public function update(Request $request, Card $card)
     {
-        //
+        $validated = $request->validate(self::$validationRules);
+        $imgpath = $this->resolvePlanetImage($request, $card);
+        if ($imgpath !== null) {
+            $validated['image'] = $imgpath;
+        }
+        $card->update($validated);
+        return redirect(route('cards.show',$card));
     }
 
     /**
@@ -84,6 +104,15 @@ class CardController extends Controller
     {
         $cd = $card ?? Card::find($request->input('card_id'));
         $cd->delete();
-        return redirect(url()->previous());
+        return redirect(route('cards.index'));
+    }
+
+    protected function resolvePlanetImage(Request $request, Card $card) {
+        $imgfile = $request->file('image');
+        $path = ($imgfile) ? $imgfile->storeAs(
+            'cards', $card->id . '.' . $imgfile->extension(),
+            'public'
+        ) : null;
+        return $path;
     }
 }

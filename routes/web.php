@@ -29,6 +29,27 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::group(['middleware' => ['auth', 'role:admin']], function () {
+    Route::get('/dashboard/users', [DashboardController::class, 'users'])->name('dashboard.users');
+    Route::get('/dashboard/users/edit/{user}', [DashboardController::class, 'userEdit'])->name('dashboard.users.edit');
+    Route::patch('/dashboard/users/update/{user}', [DashboardController::class, 'userUpdate'])->name('dashboard.users.update');
+    Route::get('/dashboard/users/delete/{user}', [DashboardController::class, 'userDelete'])->name('dashboard.users.delete');
+    Route::delete('/dashboard/users/destroy/{user}', [DashboardController::class, 'userDestroy'])->name('dashboard.users.destroy');
+
+    Route::get('/dashboard/purchases', [DashboardController::class, 'purchases'])->name('dashboard.purchases');
+});
+
+Route::group(['middleware' => ['auth', 'role:loader,admin']], function () {
+    Route::get('/cards/create', [CardController::class, 'create'])->name('cards.create');
+    Route::get('/cards/{card}/edit', [CardController::class, 'edit'])->name('cards.edit');
+    Route::put('/cards/{card}/update', [CardController::class, 'update'])->name('cards.update');
+    Route::patch('/cards/{card}/restock', [CardController::class, 'restock'])->name('cards.restock');
+    Route::delete('/cards/{card}/destroy', [CardController::class, 'destroy'])->name('cards.destroy');
+    Route::delete('/cards/destroy', [CardController::class, 'destroy'])->name('cards.destroy');
+    Route::post('/cards/store', [CardController::class, 'store'])->name('cards.store');
+});
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/planets', [DashboardController::class, 'planets'])->name('dashboard.planets');
@@ -60,24 +81,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/purchases/remove/item/{item}', [PurchaseController::class, 'removeItem'])->name('purchases.items.remove');
     Route::get('/purchases/confirm', [PurchaseController::class, 'showConfirmation'])->name('purchases.confirm.show');
     Route::post('/purchases/confirm', [PurchaseController::class, 'confirm'])->name('purchases.confirm');
-});
-
-Route::group(['middleware' => ['auth', 'role:loader,admin']], function () {
-    Route::get('/cards/create', [CardController::class, 'create'])->name('cards.create');
-    Route::get('/cards/{card}/edit', [CardController::class, 'edit'])->name('cards.edit');
-    Route::patch('/cards/{card}/restock', [CardController::class, 'restock'])->name('cards.restock');
-    Route::delete('/cards/{card}/destroy', [CardController::class, 'destroy'])->name('cards.destroy');
-    Route::delete('/cards/destroy', [CardController::class, 'destroy'])->name('cards.destroy');
-});
-
-Route::group(['middleware' => ['auth', 'role:admin']], function () {
-    Route::get('/dashboard/users', [DashboardController::class, 'users'])->name('dashboard.users');
-    Route::get('/dashboard/users/edit/{user}', [DashboardController::class, 'userEdit'])->name('dashboard.users.edit');
-    Route::patch('/dashboard/users/update/{user}', [DashboardController::class, 'userUpdate'])->name('dashboard.users.update');
-    Route::get('/dashboard/users/delete/{user}', [DashboardController::class, 'userDelete'])->name('dashboard.users.delete');
-    Route::delete('/dashboard/users/destroy/{user}', [DashboardController::class, 'userDestroy'])->name('dashboard.users.destroy');
-
-    Route::get('/dashboard/purchases', [DashboardController::class, 'purchases'])->name('dashboard.purchases');
 });
 
 Route::get('/planets', [PlanetController::class, 'index'])->name('planets.index');

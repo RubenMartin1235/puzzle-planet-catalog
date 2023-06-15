@@ -28,6 +28,9 @@
                             @auth
                                 @if (Auth::user()->hasAnyRole(['loader','admin']))
                                     @include('cards.partials.restockform')
+                                    <div class="grow self-end flex flex-col justify-end">
+                                        @include('cards.partials.actionslist')
+                                    </div>
                                 @endif
                             @endauth
                         </div>
@@ -39,4 +42,5 @@
     </div>
     @include('planets.partials.deletemodal')
     @include('purchases.partials.purchasecartfooter')
+    @include('cards.partials.delmodal')
 </x-app-layout>

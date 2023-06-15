@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('cards', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->text('description')->nullable();
             $table->unsignedDecimal('price',6,2);
             $table->unsignedBigInteger('stock');
