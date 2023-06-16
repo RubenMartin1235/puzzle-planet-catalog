@@ -34,10 +34,12 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::get('/dashboard/users', [DashboardController::class, 'users'])->name('dashboard.users');
     Route::get('/dashboard/users/edit/{user}', [DashboardController::class, 'userEdit'])->name('dashboard.users.edit');
     Route::patch('/dashboard/users/update/{user}', [DashboardController::class, 'userUpdate'])->name('dashboard.users.update');
-    Route::get('/dashboard/users/delete/{user}', [DashboardController::class, 'userDelete'])->name('dashboard.users.delete');
+    //Route::get('/dashboard/users/delete/{user}', [DashboardController::class, 'userDelete'])->name('dashboard.users.delete');
     Route::delete('/dashboard/users/destroy/{user}', [DashboardController::class, 'userDestroy'])->name('dashboard.users.destroy');
+    Route::get('/dashboard/users/{user}/purchases', [DashboardController::class, 'userPurchases'])->name('dashboard.users.purchases');
 
     Route::get('/dashboard/purchases', [DashboardController::class, 'purchases'])->name('dashboard.purchases');
+    Route::get('/dashboard/purchases/{purchase}', [DashboardController::class, 'purchaseShow'])->name('dashboard.purchases.show');
 });
 
 Route::group(['middleware' => ['auth', 'role:loader,admin']], function () {

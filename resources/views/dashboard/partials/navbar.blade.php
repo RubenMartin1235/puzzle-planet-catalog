@@ -4,6 +4,10 @@
         class="text-red-600 px-6 py-2 items-center justify-items-center text-lg">
             {{ __('Users') }}
         </x-nav-link>
+        <x-nav-link :href="route('dashboard.purchases')"
+        class="text-red-600 px-6 py-2 items-center justify-items-center text-lg">
+            {{ __('Purchases') }}
+        </x-nav-link>
     @endif
     <x-nav-link :href="route('dashboard.planets')" class="px-6 py-2 items-center justify-items-center text-lg">
         {{ __('Planets') }}

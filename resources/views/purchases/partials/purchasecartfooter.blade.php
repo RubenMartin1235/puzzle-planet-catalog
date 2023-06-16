@@ -14,7 +14,7 @@
                     class="w-[12%] bg-white shadow-md sm:rounded-lg p-2 text-gray-900 flex flex-row justify-center items-center gap-1 overflow-hidden">
                         <a class="flex flex-col items-center w-[30%]"
                         href="{{ route('cards.show', $cd) }}">
-                            <div class="flex flex-row items-center justify-center ">
+                            <div class="flex flex-row items-center justify-center w-full">
                                 @include('cards.partials.cardimg')
                             </div>
                         </a>

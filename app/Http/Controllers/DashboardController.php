@@ -11,6 +11,7 @@ use App\Models\Block;
 use App\Models\User;
 use App\Models\Comment;
 use App\Models\Card;
+use App\Models\Purchase;
 
 class DashboardController extends Controller
 {
@@ -48,14 +49,32 @@ class DashboardController extends Controller
         ]);
     }
 
+    public function purchases()
+    {
+        $purchases = Purchase::latest()->paginate(20);
+        return view('dashboard.purchases.index',[
+            'purchases' => $purchases,
+        ]);
+    }
+    public function purchaseShow(Request $request, Purchase $purchase)
+    {
+        $items = $purchase->items;
+        return view('dashboard.purchases.show',[
+            'purchase' => $purchase,
+            'items' => $items,
+        ]);
+    }
+
     public function users() {
         $users = User::latest()->paginate(15);
         return view('dashboard.users.index',[
             'users' => $users,
         ]);
     }
-    public function userDelete(Request $request, User $user) {
-        return view('dashboard.users.delete',[
+    public function userPurchases(Request $request, User $user) {
+        $purchases = $user->purchases()->latest()->paginate(20);
+        return view('dashboard.users.purchases',[
+            'purchases' => $purchases,
             'user' => $user,
         ]);
     }

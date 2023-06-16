@@ -34,6 +34,9 @@
                                 <a href="{{ route('dashboard.users.edit', $user) }}">
                                     <x-primary-button>{{ __('EDIT') }}</x-primary-button>
                                 </a>
+                                <a href="{{ route('dashboard.users.purchases', $user) }}">
+                                    <x-primary-button>{{ __('VIEW PURCHASES') }}</x-primary-button>
+                                </a>
                             </td>
                         </tr>
                     @endforeach

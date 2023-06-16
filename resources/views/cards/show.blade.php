@@ -17,8 +17,17 @@
                 >
                     <h4 class="text-3xl font-bold text-center">{{ $cd->name }}</h4>
                     <div class="flex md:flex-row flex-col gap-6 p-6">
-                        <div class="md:w-2/6 w-full">
-                            @include('cards.partials.cardimg')
+                        <div class="md:w-2/6 w-full flex flex-col">
+                            @auth
+                                @if (Auth::user()->hasAnyRole(['loader','admin']))
+                                    <div class="mx-auto">
+                                        @include('cards.partials.actionslist')
+                                    </div>
+                                @endif
+                            @endauth
+                            <div class="w-full">
+                                @include('cards.partials.cardimg')
+                            </div>
                         </div>
                         <div class="grow flex flex-col gap-3">
                             <div class="flex flex-flow justify-between gap-6">
@@ -36,9 +45,6 @@
                                 @if (Auth::user()->hasAnyRole(['loader','admin']))
                                     <div class="justify-self-end px-3">
                                         @include('cards.partials.restockform')
-                                        <div class="grow self-end flex flex-col justify-end">
-                                            @include('cards.partials.actionslist')
-                                        </div>
                                     </div>
                                 @endif
                             @endauth
