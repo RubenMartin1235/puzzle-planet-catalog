@@ -113,8 +113,9 @@ class PurchaseController extends Controller
         foreach ($items as $item) {
             $card = $item->card;
             $pivotdata;
-            $user_had_cards_amount = Auth::user()->cards_collected()->find($card->id)->pivot->amount;
-            if (Auth::user()->hasCard($card->name)) {
+            $user_had_card = Auth::user()->cards_collected()->find($card->id);
+            if (isset($user_had_card)) {
+                $user_had_cards_amount = $user_had_card->pivot->amount;
                 $pivotdata = ['amount' => ($item->amount + $user_had_cards_amount)];
                 Auth::user()->cards_collected()->updateExistingPivot($card->id, $pivotdata);
             } else {
@@ -157,9 +158,11 @@ class PurchaseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Purchase $purchase)
+    public function destroy(Request $request, Purchase $purchase = null)
     {
-        //
+        $prch = $purchase ?? Purchase::find($request->input('purchase_id'));
+        $prch->delete();
+        return redirect(url()->previous());
     }
 
     public function removeItem(Request $request, PurchaseItem $item) {

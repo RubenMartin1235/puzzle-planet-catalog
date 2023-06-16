@@ -40,6 +40,9 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
 
     Route::get('/dashboard/purchases', [DashboardController::class, 'purchases'])->name('dashboard.purchases');
     Route::get('/dashboard/purchases/{purchase}', [DashboardController::class, 'purchaseShow'])->name('dashboard.purchases.show');
+
+    Route::post('/purchases/{purchase}/destroy', [PurchaseController::class, 'destroy'])->name('purchases.destroy');
+    Route::delete('/purchases/destroy', [PurchaseController::class, 'destroy'])->name('purchases.destroy');
 });
 
 Route::group(['middleware' => ['auth', 'role:loader,admin']], function () {

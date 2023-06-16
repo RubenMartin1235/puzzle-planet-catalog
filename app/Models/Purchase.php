@@ -10,7 +10,8 @@ class Purchase extends Model
     use HasFactory;
 
     protected $fillable = [
-        'status'
+        'status',
+        'final_price'
     ];
 
     public function items() {

@@ -21,12 +21,19 @@
                 </td>
                 <td class="border-2 border-solid border-gray-200">{{ Carbon\Carbon::parse($purchase->created_at)->format('Y/m/d') }}</td>
                 <td class="border-2 border-solid border-gray-200">{{ Carbon\Carbon::parse($purchase->updated_at)->format('Y/m/d') }}</td>
-                <td class="gap-3 border-2 border-solid border-gray-200">
-                    <a href="{{ route('dashboard.purchases.show', $purchase) }}">
-                        <x-primary-button>{{ __('VIEW ITEMS') }}</x-primary-button>
-                    </a>
+                <td class="gap-3 border-2 border-solid border-gray-200 max-w-1/6">
+                    <div class="flex flex-row justify-center gap-3">
+                        <a href="{{ route('dashboard.purchases.show', $purchase) }}">
+                            <x-primary-button>{{ __('VIEW ITEMS') }}</x-primary-button>
+                        </a>
+                        <x-danger-button
+                            x-data @click="document.querySelector('input#purchase_id').value = {{ $purchase->id }}"
+                            x-on:click.prevent="$dispatch('open-modal', 'confirm-purchase-deletion')"
+                        >{{ __('DELETE PURCHASE') }}</x-danger-button>
+                    </div>
                 </td>
             </tr>
         @endforeach
     </tbody>
 </table>
+@include('dashboard.purchases.partials.delmodal_purchase')
