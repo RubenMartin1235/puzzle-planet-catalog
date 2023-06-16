@@ -11,7 +11,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 w-full grid md:grid-cols-2 grid-cols-1">
                     <div class="text-gray-700">
-                        <span>{{ __("Welcome, ") . $role->name . ' ' }}</span>
+                        <span>{{ __("Welcome, ") . (isset($role) ? $role->name : __('user')) . ' ' }}</span>
                         <span class="text-gray-900 font-bold">{{ Auth::user()->name }}</span><span>{{ "!" }}</span>
                     </div>
                     <div class="bg-white overflow-hidden shadow-md sm:rounded-lg w-full grid grid-cols-3 grid-rows-1 items-center p-3">

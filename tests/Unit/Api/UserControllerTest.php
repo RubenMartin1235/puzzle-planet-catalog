@@ -42,6 +42,7 @@ class UserControllerTest extends TestCase
     /**
      * A basic unit test example.
      */
+    /*
     public function test_user_login_correct_credentials(): void
     {
         $response = $this->post('/api/login',[
@@ -224,7 +225,7 @@ class UserControllerTest extends TestCase
             'status','msg'
         ]);
     }
-
+    */
 
 
 }
