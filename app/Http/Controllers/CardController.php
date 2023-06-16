@@ -37,7 +37,7 @@ class CardController extends Controller
     {
         $validated = $request->validate(self::$validationRules);
         $card = Card::factory()->create($validated);
-        $imgpath = $this->resolvePlanetImage($request, $card);
+        $imgpath = $this->resolveCardImage($request, $card);
         $validated['image'] = $imgpath;
         $card->fill($validated);
         $card->save();
@@ -77,12 +77,12 @@ class CardController extends Controller
     public function update(Request $request, Card $card)
     {
         $validated = $request->validate(self::$validationRules);
-        $imgpath = $this->resolvePlanetImage($request, $card);
+        $imgpath = $this->resolveCardImage($request, $card);
         if ($imgpath !== null) {
             $validated['image'] = $imgpath;
         }
         $card->update($validated);
-        return redirect(route('cards.show',$card));
+        return redirect(route('cards.show', $card));
     }
 
     /**
@@ -107,7 +107,7 @@ class CardController extends Controller
         return redirect(route('cards.index'));
     }
 
-    protected function resolvePlanetImage(Request $request, Card $card) {
+    protected function resolveCardImage(Request $request, Card $card) {
         $imgfile = $request->file('image');
         $path = ($imgfile) ? $imgfile->storeAs(
             'cards', $card->id . '.' . $imgfile->extension(),

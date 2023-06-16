@@ -20,16 +20,25 @@
                         <div class="md:w-2/6 w-full">
                             @include('cards.partials.cardimg')
                         </div>
-                        <div class="grow flex flex-col">
-                            <p class="text-lg text-left px-6 text-gray-800">
-                                {!! nl2br(e($cd->description)) !!}
-                            </p>
-                            @include('cards.partials.cardaddform')
+                        <div class="grow flex flex-col gap-3">
+                            <div class="flex flex-flow justify-between gap-6">
+                                <p class="text-xl text-left px-3 py-3 text-gray-900 border-dotted border-2 border-gray-300">
+                                    {!! nl2br(e($cd->description)) !!}
+                                </p>
+                                <p class="text-4xl font-black underline">
+                                    {{ $cd->price . __(' €') }}
+                                </p>
+                            </div>
+                            <div class="px-3">
+                                @include('cards.partials.cardaddform')
+                            </div>
                             @auth
                                 @if (Auth::user()->hasAnyRole(['loader','admin']))
-                                    @include('cards.partials.restockform')
-                                    <div class="grow self-end flex flex-col justify-end">
-                                        @include('cards.partials.actionslist')
+                                    <div class="justify-self-end px-3">
+                                        @include('cards.partials.restockform')
+                                        <div class="grow self-end flex flex-col justify-end">
+                                            @include('cards.partials.actionslist')
+                                        </div>
                                     </div>
                                 @endif
                             @endauth
