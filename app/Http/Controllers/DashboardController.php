@@ -48,6 +48,12 @@ class DashboardController extends Controller
             'cards' => $cards,
         ]);
     }
+    public function cardsAdmin() {
+        $cards = Card::latest()->paginate(15);
+        return view('dashboard.cards.privileged',[
+            'cards' => $cards,
+        ]);
+    }
 
     public function purchases()
     {
@@ -78,6 +84,14 @@ class DashboardController extends Controller
             'user' => $user,
         ]);
     }
+    public function userCards(Request $request, User $user) {
+        $cards = $user->cards_collected()->latest()->paginate(20);
+        return view('dashboard.users.cards',[
+            'cards' => $cards,
+            'user' => $user,
+        ]);
+    }
+
     public function userDestroy(Request $request, User $user) {
         $user->delete();
         return redirect(route('dashboard.users'));

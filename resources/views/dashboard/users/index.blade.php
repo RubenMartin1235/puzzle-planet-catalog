@@ -30,13 +30,24 @@
                             <td>{{ $user->email }}</td>
                             <td>{{implode(',', $user->roles()->pluck('name')->toArray())}}</td>
                             <td class="text-right">{{ $user->balance }}</td>
-                            <td class="w-full flex flex-row justify-center gap-3">
-                                <a href="{{ route('dashboard.users.edit', $user) }}">
+                            <td class="px-3 grid grid-cols-3 items-center gap-3">
+                                <a class="mx-auto" href="{{ route('dashboard.users.edit', $user) }}">
                                     <x-primary-button>{{ __('EDIT') }}</x-primary-button>
                                 </a>
-                                <a href="{{ route('dashboard.users.purchases', $user) }}">
-                                    <x-primary-button>{{ __('VIEW PURCHASES') }}</x-primary-button>
-                                </a>
+                                @if ($user->purchases->first())
+                                    <a class="mx-auto" href="{{ route('dashboard.users.purchases', $user) }}">
+                                        <x-secondary-button>{{ __('VIEW PURCHASES') }}</x-secondary-button>
+                                    </a>
+                                @else
+                                    <br>
+                                @endif
+                                @if ($user->cards_collected->first())
+                                    <a class="mx-auto" href="{{ route('dashboard.users.cards', $user) }}">
+                                        <x-secondary-button>{{ __('OWNED CARDS') }}</x-secondary-button>
+                                    </a>
+                                @else
+                                    <br>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

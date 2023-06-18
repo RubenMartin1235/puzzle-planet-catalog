@@ -9,13 +9,19 @@
             {{ __('Purchases') }}
         </x-nav-link>
     @endif
+    @if (Auth::user()->hasAnyRole(['loader','admin']))
+        <x-nav-link :href="route('dashboard.cards-admin')"
+        class="text-green-600 px-6 py-2 items-center justify-items-center text-lg">
+            {{ __('Cards') }}
+        </x-nav-link>
+    @endif
     <x-nav-link :href="route('dashboard.planets')" class="px-6 py-2 items-center justify-items-center text-lg">
-        {{ __('Planets') }}
+        {{ __('My Planets') }}
     </x-nav-link>
     <x-nav-link :href="route('dashboard.comments')" class="px-6 py-2 items-center justify-items-center text-lg">
-        {{ __('Comments') }}
+        {{ __('My Comments') }}
     </x-nav-link>
     <x-nav-link :href="route('dashboard.cards')" class="px-6 py-2 items-center justify-items-center text-lg">
-        {{ __('Cards') }}
+        {{ __('My Collection') }}
     </x-nav-link>
 </nav>

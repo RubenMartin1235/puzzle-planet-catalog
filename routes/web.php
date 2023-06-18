@@ -37,6 +37,7 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
     //Route::get('/dashboard/users/delete/{user}', [DashboardController::class, 'userDelete'])->name('dashboard.users.delete');
     Route::delete('/dashboard/users/destroy/{user}', [DashboardController::class, 'userDestroy'])->name('dashboard.users.destroy');
     Route::get('/dashboard/users/{user}/purchases', [DashboardController::class, 'userPurchases'])->name('dashboard.users.purchases');
+    Route::get('/dashboard/users/{user}/cards', [DashboardController::class, 'userCards'])->name('dashboard.users.cards');
 
     Route::get('/dashboard/purchases', [DashboardController::class, 'purchases'])->name('dashboard.purchases');
     Route::get('/dashboard/purchases/{purchase}', [DashboardController::class, 'purchaseShow'])->name('dashboard.purchases.show');
@@ -59,6 +60,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/planets', [DashboardController::class, 'planets'])->name('dashboard.planets');
     Route::get('/dashboard/cards', [DashboardController::class, 'cards'])->name('dashboard.cards');
+    Route::get('/dashboard/cards-admin', [DashboardController::class, 'cardsAdmin'])->name('dashboard.cards-admin');
     Route::get('/dashboard/comments', [DashboardController::class, 'comments'])->name('dashboard.comments');
     Route::get('/dashboard/topup', [DashboardController::class, 'topup'])->name('dashboard.topup');
     Route::put('/dashboard/topup', [DashboardController::class, 'topupAction'])->name('dashboard.topup.action');
