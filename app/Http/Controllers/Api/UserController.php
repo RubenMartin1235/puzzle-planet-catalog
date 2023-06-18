@@ -10,6 +10,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use App\Models\Role;
 use App\Models\User;
 
 class UserController extends Controller
@@ -63,6 +64,7 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+        $user->roles()->attach(Role::where('name','user')->first());
         $user->save();
 
         event(new Registered($user));
