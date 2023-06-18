@@ -33,12 +33,16 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('logout', [ApiUserController::class, 'logout']);
 
     Route::get('users/{user}', [ApiUserController::class, 'show']);
+    Route::put('profile/topup', [ApiUserController::class, 'topup']);
+    Route::get('profile/cards', [ApiUserController::class, 'cardCollection']);
 });
 
 Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
     Route::post('users', [ApiUserController::class, 'store']);
     Route::put('users/{user}', [ApiUserController::class, 'update']);
     Route::delete('users/{user}', [ApiUserController::class, 'destroy']);
+    Route::put('users/{user}/topup', [ApiUserController::class, 'topup']);
+    Route::get('users/{user}/cards', [ApiUserController::class, 'cardCollection']);
 });
 
 
@@ -112,13 +116,14 @@ Route::group(['middleware' => ['auth:sanctum', 'role:loader,admin']], function (
 
 // PURCHASES
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('purchases/items', [PurchaseController::class, 'currentItems']);
+    Route::get('purchases/items', [PurchaseController::class, 'showItems']);
     Route::post('purchases/add/card/{card}', [PurchaseController::class, 'addCard']);
-    Route::delete('purchases/remove/item/{item}', [PurchaseController::class, 'removeItem']);
+    Route::delete('purchases/items/{item}', [PurchaseController::class, 'removeItem']);
     Route::post('purchases/confirm', [PurchaseController::class, 'confirm']);
 });
 Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
     Route::get('users/{user}/purchases', [PurchaseController::class, 'showByUser']);
     Route::get('purchases/{purchase}/items', [PurchaseController::class, 'showItems']);
+    Route::delete('purchases/{purchase}', [PurchaseController::class, 'destroy']);
 });
 

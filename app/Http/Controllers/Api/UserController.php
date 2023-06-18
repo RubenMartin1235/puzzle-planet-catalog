@@ -167,4 +167,41 @@ class UserController extends Controller
             'message' => 'Successfully deleted user.',
         ]);
     }
+
+    public function topup(Request $request, string $id = null) {
+        $user = isset($id) ? User::find($id) : Auth::user();
+        if (!isset($user)) {
+            return response()->json([
+                "success" => false,
+                "message" => "This user does not exist!",
+            ],404);
+        }
+        $validated = $request->validate([
+            'topup' => 'required|numeric|min:0|max:1000',
+            'ccc' => 'required|string',
+        ]);
+        $new_balance = $user->balance + $validated['topup'];
+        $user->balance = $new_balance;
+        $user->save();
+        $user->update($validated);
+        return response()->json([
+            'success' => true,
+            'message' => "Successfully updated ".(isset($id) ? ($user->name ."'s ") : 'your')." balance!",
+            'balance' => $user->balance,
+        ]);
+    }
+
+    public function cardCollection(Request $request, string $id = null) {
+        $user = isset($id) ? User::find($id) : Auth::user();
+        if (!isset($user)) {
+            return response()->json([
+                "success" => false,
+                "message" => "This user does not exist!",
+            ],404);
+        }
+        return response()->json([
+            'success' => true,
+            'data' => $user->cards_collected->toArray(),
+        ]);
+    }
 }
