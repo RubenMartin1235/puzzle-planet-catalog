@@ -53,8 +53,8 @@ class BlockController extends Controller
         $block = Block::factory()->create($validated->toArray());
         $block->save();
         return response()->json([
-            'status' => 1,
-            'msg' => 'Successfully created block!'
+            'success' => true,
+            'message' => 'Successfully created block!'
         ]);
     }
 
@@ -96,8 +96,8 @@ class BlockController extends Controller
         $block = Block::find($id);
         if (!isset($block->id)) {
             return response()->json([
-                "status" => 0,
-                "msg" => "Block with id {$id} does not exist!",
+                'success' => false,
+                "message" => "Block with id {$id} does not exist!",
             ],404);
         }
         $validated = $this->validateReq($request);
@@ -123,8 +123,8 @@ class BlockController extends Controller
         }
         $block->delete();
         return response()->json([
-            'status' => 1,
-            'msg' => 'Successfully deleted block.',
+            'success' => true,
+            'message' => 'Successfully deleted block.',
         ]);
     }
 }

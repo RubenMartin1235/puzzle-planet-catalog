@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Comment;
 use App\Models\Planet;
+use App\Models\Card;
 use App\Models\User;
 
 class CommentController extends Controller
@@ -32,19 +33,7 @@ class CommentController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request, string $planet_id)
-    {
-        $pl = Planet::find($planet_id);
-        if (!$pl) {
-            return response()->json([
-                'success' => false,
-                'message' => "Planet with id {$planet_id} not found",
-            ], 404);
-        }
-
+    protected function resolveAuthor(Request $request) {
         $author;
         if ($request->user()->hasAnyRole(['admin'])) {
             // if json field "user_id" in request body exists...
@@ -57,7 +46,13 @@ class CommentController extends Controller
         } else {
             $author = Auth::user();
         }
-
+        return $author;
+    }
+    /**
+     * Store a newly created resource in storage.
+     */
+    protected function store(Request $request, $commentable) {
+        $author = $this->resolveAuthor($request);
         $validated = $request->validate([
             'message'=>'required|string|max:255',
         ]);
@@ -67,7 +62,7 @@ class CommentController extends Controller
         ]);
         */
         $comment = Comment::factory()->make($validated);
-        $comment->commentable()->associate($pl);
+        $comment->commentable()->associate($commentable);
         $comment->user()->associate($author);
         $comment->save();
 
@@ -75,6 +70,28 @@ class CommentController extends Controller
             'success' => true,
             'message' => "Comment successfully made!",
         ], 200);
+    }
+    public function storeOnPlanet(Request $request, string $planet_id)
+    {
+        $pl = Planet::find($planet_id);
+        if (!$pl) {
+            return response()->json([
+                'success' => false,
+                'message' => "Planet with id {$planet_id} not found",
+            ], 404);
+        }
+        return $this->store($request, $pl);
+    }
+    public function storeOnCard(Request $request, string $card_id)
+    {
+        $cd = Card::find($card_id);
+        if (!$cd) {
+            return response()->json([
+                'success' => false,
+                'message' => "Card with id {$card_id} not found",
+            ], 404);
+        }
+        return $this->store($request, $cd);
     }
 
     /**
@@ -117,7 +134,15 @@ class CommentController extends Controller
             'data' => $comments->toArray()
         ], 200);
     }
-    public function showByPlanet(string $id)
+
+    protected function showByCommentable(Request $request, $commentable) {
+        $comments = $commentable->comments()->get();
+        return response()->json([
+            'success' => true,
+            'data' => $comments->toArray()
+        ], 200);
+    }
+    public function showByPlanet(Request $request, string $id)
     {
         $planet = Planet::find($id);
         if (!$planet) {
@@ -126,11 +151,18 @@ class CommentController extends Controller
                 'message' => 'Planet with id ' . $id . ' not found.'
             ], 404);
         }
-        $comments = $planet->comments()->get();
-        return response()->json([
-            'success' => true,
-            'data' => $comments->toArray()
-        ], 200);
+        return $this->showByCommentable($request, $planet);
+    }
+    public function showByCard(Request $request, string $id)
+    {
+        $card = Card::find($id);
+        if (!$card) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Card with id ' . $id . ' not found.'
+            ], 404);
+        }
+        return $this->showByCommentable($request, $card);
     }
 
     /**

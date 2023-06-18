@@ -71,10 +71,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('comments/{comment}', [ApiCommentController::class, 'show']);    // Show comment by ID.
     Route::get('profile/comments', [ApiCommentController::class, 'showOwn']);           // Show comments of authenticated user.
     Route::get('planets/{planet}/comments', [ApiCommentController::class, 'showByPlanet']); // Show comments made on a planet.
+    Route::get('cards/{card}/comments', [ApiCommentController::class, 'showByCard']); // Show comments made on a card.
     Route::get('users/{user}/comments', [ApiCommentController::class, 'showByUser']);       // Show comments made by another user.
 
-    Route::post('planets/{planet}/comments', [ApiCommentController::class, 'store']);       // Make comment on a planet.
-    Route::post('cards/{card}/comments', [ApiCommentController::class, 'store']);           // Make comment on a card.
+    Route::post('planets/{planet}/comments', [ApiCommentController::class, 'storeOnPlanet']);       // Make comment on a planet.
+    Route::post('cards/{card}/comments', [ApiCommentController::class, 'storeOnCard']);           // Make comment on a card.
     Route::put('comments/{comment}', [ApiCommentController::class, 'update']);              // Update comment.
     Route::delete('comments/{comment}', [ApiCommentController::class, 'destroy']);          // Delete comment.
 });
@@ -100,12 +101,24 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
 // CARDS
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('cards', [CardController::class, 'index']);
-    Route::get('cards/{card}', [CardController::class, 'show']);    // Show card by ID.
-    Route::get('cards/{card}/comments', [CardController::class, 'comments']);
+    Route::get('cards/{card}', [CardController::class, 'show']);
 });
 Route::group(['middleware' => ['auth:sanctum', 'role:loader,admin']], function () {
     Route::post('cards', [CardController::class, 'store']);
     Route::put('cards/{card}', [CardController::class, 'update']);
+    Route::patch('cards/{card}', [CardController::class, 'restock']);
     Route::delete('cards/{card}', [CardController::class, 'destroy']);
+});
+
+// PURCHASES
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('purchases/items', [PurchaseController::class, 'currentItems']);
+    Route::post('purchases/add/card/{card}', [PurchaseController::class, 'addCard']);
+    Route::delete('purchases/remove/item/{item}', [PurchaseController::class, 'removeItem']);
+    Route::post('purchases/confirm', [PurchaseController::class, 'confirm']);
+});
+Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
+    Route::get('users/{user}/purchases', [PurchaseController::class, 'showByUser']);
+    Route::get('purchases/{purchase}/items', [PurchaseController::class, 'showItems']);
 });
 

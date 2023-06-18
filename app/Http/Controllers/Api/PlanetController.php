@@ -115,8 +115,8 @@ class PlanetController extends Controller
         $planet = Planet::find($id);
         if (!isset($planet->id)) {
             return response()->json([
-                "status" => 0,
-                "msg" => "Planet with id {$id} does not exist!",
+                'success' => false,
+                "message" => "Planet with id {$id} does not exist!",
             ],404);
         }
 
@@ -133,8 +133,8 @@ class PlanetController extends Controller
         } else {
             if ($planet->user_id <> $request->user()->id) {
                 return response()->json([
-                    "status" => 0,
-                    "msg" => "You do not have permission to modify this planet!",
+                    'success' => false,
+                    "message" => "You do not have permission to modify this planet!",
                 ],404);
             }
             $author = Auth::user();
@@ -150,8 +150,8 @@ class PlanetController extends Controller
         $planet->save();
 
         $successresult_array = [
-            'status' => 1,
-            'msg' => 'Successfully updated planet info!',
+            'success' => true,
+            'message' => 'Successfully updated planet info!',
         ];
 
         $blocks = $request->blocks;
@@ -194,13 +194,13 @@ class PlanetController extends Controller
         if ($request->user()->hasAnyRole(['admin','loader']) || $planet->user_id == $request->user()->id) {
             $planet->delete();
             return response()->json([
-                'status' => 1,
-                'msg' => 'Successfully deleted planet.',
+                'success' => true,
+                'message' => 'Successfully deleted planet.',
             ]);
         }
         return response()->json([
-            "status" => 0,
-            "msg" => "You do not have permission to delete this planet!",
+            'success' => false,
+            "message" => "You do not have permission to delete this planet!",
         ],404);
     }
 }
