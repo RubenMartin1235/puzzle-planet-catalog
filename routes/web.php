@@ -54,13 +54,13 @@ Route::group(['middleware' => ['auth', 'role:loader,admin']], function () {
     Route::delete('/cards/{card}/destroy', [CardController::class, 'destroy'])->name('cards.destroy');
     Route::delete('/cards/destroy', [CardController::class, 'destroy'])->name('cards.destroy');
     Route::post('/cards/store', [CardController::class, 'store'])->name('cards.store');
+    Route::get('/dashboard/cards-admin', [DashboardController::class, 'cardsAdmin'])->name('dashboard.cards-admin');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/planets', [DashboardController::class, 'planets'])->name('dashboard.planets');
     Route::get('/dashboard/cards', [DashboardController::class, 'cards'])->name('dashboard.cards');
-    Route::get('/dashboard/cards-admin', [DashboardController::class, 'cardsAdmin'])->name('dashboard.cards-admin');
     Route::get('/dashboard/comments', [DashboardController::class, 'comments'])->name('dashboard.comments');
     Route::get('/dashboard/topup', [DashboardController::class, 'topup'])->name('dashboard.topup');
     Route::put('/dashboard/topup', [DashboardController::class, 'topupAction'])->name('dashboard.topup.action');

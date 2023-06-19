@@ -35,6 +35,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('users/{user}', [ApiUserController::class, 'show']);
     Route::put('profile/topup', [ApiUserController::class, 'topup']);
     Route::get('profile/cards', [ApiUserController::class, 'cardCollection']);
+    Route::get('profile/roles', [ApiUserController::class, 'showRoles']);
 });
 
 Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
@@ -43,6 +44,10 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
     Route::delete('users/{user}', [ApiUserController::class, 'destroy']);
     Route::put('users/{user}/topup', [ApiUserController::class, 'topup']);
     Route::get('users/{user}/cards', [ApiUserController::class, 'cardCollection']);
+
+    Route::get('users/{user}/roles', [ApiUserController::class, 'showRoles']);
+    Route::patch('users/{user}/roles', [ApiUserController::class, 'assignRoles']);
+    Route::delete('users/{user}/roles', [ApiUserController::class, 'takeAwayRoles']);
 });
 
 

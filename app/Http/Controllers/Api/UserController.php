@@ -206,4 +206,87 @@ class UserController extends Controller
             'data' => $user->cards_collected->toArray(),
         ]);
     }
+
+    protected function resolveNewRoles(array $roles) {
+        $new_role_ids = [];
+        foreach ($roles as $rolename) {
+            $role = Role::where('name', $rolename)->first();
+            if ($role) {
+                $new_role_ids[] = $role->id;
+            }
+        }
+        return $new_role_ids;
+    }
+
+    public function showRoles(Request $request, string $user_id = null) {
+        $user = isset($user_id) ? User::find($user_id) : Auth::user();
+        if (!isset($user)) {
+            return response()->json([
+                "success" => false,
+                "message" => "This user does not exist!",
+            ],404);
+        }
+        return response()->json([
+            'success' => true,
+            "message" => "Successfully loaded user {$user->name}'s roles!",
+            'data' => [
+                'roles' =>
+                Auth::user()->hasAnyRole(['admin']) ?
+                $user->roles->toArray() :
+                $user->roles()->pluck('name')
+            ],
+        ]);
+    }
+    public function assignRoles(Request $request, string $user_id = null) {
+        $user = isset($user_id) ? User::find($user_id) : Auth::user();
+        if (!isset($user)) {
+            return response()->json([
+                "success" => false,
+                "message" => "This user does not exist!",
+            ],404);
+        }
+        $validated=$request->validate([
+            'roles'=>'required|string|max:255',
+        ]);
+
+        $roles = explode(',',$validated['roles']);
+        $new_role_ids = $this->resolveNewRoles($roles);
+        $user->roles()->syncWithoutDetaching($new_role_ids);
+
+        return response()->json([
+            'success' => true,
+            "message" => "Successfully assigned roles to user {$user->name}!",
+            'data' => [
+                'roles' => $user->roles->toArray()
+            ],
+        ]);
+    }
+    public function takeAwayRoles(Request $request, string $user_id = null) {
+        $user = isset($user_id) ? User::find($user_id) : Auth::user();
+        if (!isset($user)) {
+            return response()->json([
+                "success" => false,
+                "message" => "This user does not exist!",
+            ],404);
+        }
+        $validated=$request->validate([
+            'roles'=>'required|string|max:255',
+        ]);
+
+        $roles = explode(',',$validated['roles']);
+        $new_role_ids = $this->resolveNewRoles($roles);
+        $user->roles()->detach($new_role_ids);
+
+        if (!$user->roles()->first()) {
+            $user->roles()->attach(Role::where('name','user')->first());
+        }
+
+        return response()->json([
+            'success' => true,
+            "message" => "The chosen roles have been taken away from user {$user->name}!",
+            'data' => [
+                'roles' => $user->roles->toArray()
+            ],
+        ]);
+    }
 }
